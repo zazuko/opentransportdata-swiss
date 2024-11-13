@@ -1,0 +1,15 @@
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX schema: <http://schema.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix otd: <https://lod.opentransportdata.swiss/vocab/>
+
+SELECT *
+FROM <https://linked.opendata.swiss/graph/sbb/nova>
+WHERE {
+  ?Kante a otd:LocalNetwork;
+          rdfs:label ?name;
+} 
+ ORDER BY ASC (?name)
+LIMIT 1000

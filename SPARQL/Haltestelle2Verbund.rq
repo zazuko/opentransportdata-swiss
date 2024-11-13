@@ -1,0 +1,29 @@
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX schema: <http://schema.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+#SELECT DISTINCT gibt nur einzigartige Kombinationen aus.
+SELECT DISTINCT ?verbund_name ?didok ?haltestelle_bezeichnung
+FROM <https://linked.opendata.swiss/graph/sbb/nova>
+WHERE {
+  	# Ausgabe zu Zonenplan
+  	?Kante a otd:Relation;
+  		otd:zoningPlan ?Zonenplan;
+  		gtfs:stop ?haltestelle.
+  
+  	?Zonenplan otd:alliance ?verbund.
+  
+  	?verbund rdfs:label ?verbund_name.
+    
+  	FILTER(?Zonenplan IN (<https://lod.opentransportdata.swiss/zoningplan/libero/libero-abo-libero>))
+
+  	SERVICE <https://lod.opentransportdata.swiss/query> {
+    ?haltestelle rdfs:label ?haltestelle_bezeichnung;
+		dcterms:identifier ?didok.
+}
+} 
+LIMIT 1000

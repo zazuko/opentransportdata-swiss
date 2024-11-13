@@ -1,0 +1,44 @@
+PREFIX dcterm: <http://purl.org/dc/terms/>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX schema: <http://schema.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+#SELECT DISTINCT ?VerbundBezeichnung ?ZonenplanBezeichnung ?ZonenCode ?VerkehrsmittelBezeichnung ?Didok ?HaltestelleBezeichnung
+SELECT ?VerbundBezeichnung ?ZonenplanBezeichnung ?ZonenCode ?ZonenEignerCode ?ZonenEignerKuerzel ?VerkehrsmittelBezeichnung ?stop1id ?stop1Name ?stop2id ?stop2Name
+WHERE {
+  ?Verbund a otd:Alliance ;
+    rdfs:label ?VerbundBezeichnung .
+  
+  ?Zonenplan a otd:ZoningPlan ;
+    otd:alliance ?Verbund ;
+    otd:zone ?Zone ;
+    rdfs:label ?ZonenplanBezeichnung .
+  
+  ?Zone a otd:Zone ;
+    schema:identifier ?ZonenCode;
+    schema:provider ?ZonenEigner.
+  
+  ?ZonenEigner a schema:Organization;
+               schema:alternateName ?ZonenEignerKuerzel;
+               schema:identifier ?ZonenEignerCode.
+  
+  ?Relation a otd:Relation;
+    otd:zone ?Zone;
+    otd:meanOfTransport ?VerkehrsmittelBezeichnung;
+    gtfs:stop ?stop1 ;
+    gtfs:stop ?stop2 .
+  
+  ?stop1 rdfs:label ?stop1Name ;
+    dcterms:identifier ?stop1id .
+  
+  ?stop2 rdfs:label ?stop2Name ;
+    dcterms:identifier ?stop2id .
+  
+  FILTER( xsd:integer(?stop1id) > xsd:integer(?stop2id) )
+} LIMIT 100

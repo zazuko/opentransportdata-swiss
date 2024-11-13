@@ -1,0 +1,21 @@
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX schema: <http://schema.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+# Select: w�hlt im Ergebnis die Variablen aus, welche angezeigt werden sollen .
+#SELECT ?Zonenplan ?zonenplan_name ?zone ?zone_name
+SELECT *
+FROM <https://linked.opendata.swiss/graph/sbb/nova>
+WHERE {
+  	# Ausgabe zu Zonenplan
+  	?Kante a otd:Relation;
+  		otd:zoningPlan ?Zonenplan;
+  		gtfs:stop ?haltestelle.
+  
+  	FILTER(?Zonenplan IN (<https://lod.opentransportdata.swiss/zoningplan/Onde%20Verte/Onde%20verte%20Billett>))
+} 
+LIMIT 1000

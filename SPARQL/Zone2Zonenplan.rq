@@ -1,0 +1,19 @@
+PREFIX schema: <http://schema.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+# Select: wählt die Variablen aus, welche angezeigt werden sollen im Ergebnis.
+SELECT ?Zonenplan ?zonenplan_name ?zone ?zone_name
+FROM <https://linked.opendata.swiss/graph/sbb/nova>
+WHERE {
+  	# Ausgabe zu Zonenplan
+  	?Zonenplan a	otd:ZoningPlan;
+    	rdfs:label ?zonenplan_name;
+  		otd:zone ?zone.
+  
+  	# Ausgabe zu Zone
+  	?zone rdfs:label ?zone_name.
+} 

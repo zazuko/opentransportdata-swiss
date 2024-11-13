@@ -1,0 +1,28 @@
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX schema: <http://schema.org/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
+PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+ 
+
+# Select: w�hlt die Variablen aus, welche angezeigt werden sollen im Ergebnis.
+
+SELECT DISTINCT ?geometrie
+
+WHERE {
+#Service holt die Daten aus einem anderen System --> die Daten liegen noch nicht auf PROD. Wenn auf PROD, dann einfach Service l�schen
+    SERVICE <https://trifid-lindas.test.cluster.ldbar.ch/query> {
+      # Ausgabe zu Zonenplan
+      ?Kante a otd:Relation;
+          otd:zoningPlan ?Zonenplan;
+          gtfs:stop ?haltestelle.
+  
+      FILTER(?Zonenplan IN (<https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-libero>))
+}  
+
+    ?haltestelle <http://www.opengis.net/ont/geosparql#hasGeometry>/<http://www.opengis.net/ont/geosparql#asWKT> ?geometrie
+
+} 
