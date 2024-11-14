@@ -1,14 +1,15 @@
-PREFIX schema: <http://schema.org/>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
 PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema: <http://schema.org/>
 
 SELECT ?departure ?departureCoord ?departureID ?arrival ?arrivalCoord ?arrivalID
 WHERE {
         ?Kante a otd:Relation;
               otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-libero>;
-              schema:departureStation ?departurePoint ;
-              schema:arrivalStation ?arrivalPoint .
+              gtfs:stop ?departurePoint ;
+              gtfs:stop ?arrivalPoint .
   
         ?departurePoint rdfs:label ?departure ;
              <http://www.opengis.net/ont/geosparql#hasGeometry>/<http://www.opengis.net/ont/geosparql#asWKT> ?departureCoord;              

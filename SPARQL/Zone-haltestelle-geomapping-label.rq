@@ -12,7 +12,7 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 #SELECT ?Zonenplan ?zonenplan_name ?zone ?zone_name
 SELECT DISTINCT ?geometrie ?geometrieLabel
 #SELECT *
-#FROM <https://linked.opendata.swiss/graph/sbb/didok>
+#FROM <https://lindas.admin.ch/sbb/nova>
 WHERE {
       # Ausgabe zu Zonenplan
       ?Kante a otd:Relation;

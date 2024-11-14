@@ -6,7 +6,7 @@ prefix otd: <https://lod.opentransportdata.swiss/vocab/>
 prefix vcard: <http://www.w3.org/2006/vcard/ns#>
 
 SELECT * 
-FROM <https://linked.opendata.swiss/graph/sbb/nova>
+FROM <https://lindas.admin.ch/sbb/nova>
 WHERE {
   ?Kante a otd:Relation;
                otd:zoningPlan ?zonenplan. 

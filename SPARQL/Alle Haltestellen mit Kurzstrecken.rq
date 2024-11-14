@@ -9,7 +9,7 @@ SELECT distinct ?Station ?Name ?Coord ?departureID
 WHERE {
         ?Kante a otd:Relation;
               otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-libero>;
-              schema:departureStation ?Station .
+              gtfs:stop ?Station .
    
         ?Station rdfs:label ?Name ;
              <http://www.opengis.net/ont/geosparql#hasGeometry>/<http://www.opengis.net/ont/geosparql#asWKT> ?Coord;              

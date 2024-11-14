@@ -7,7 +7,7 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 
 # Select: wählt die Variablen aus, welche angezeigt werden sollen im Ergebnis.
 SELECT ?Zonenplan ?zonenplan_name ?zone ?zone_name
-FROM <https://linked.opendata.swiss/graph/sbb/nova>
+FROM <https://lindas.admin.ch/sbb/nova>
 WHERE {
   	# Ausgabe zu Zonenplan
   	?Zonenplan a	otd:ZoningPlan;

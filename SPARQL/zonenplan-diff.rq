@@ -11,15 +11,15 @@ SELECT DISTINCT ?haltestelle ?geometrie  ?geometrieLabel WHERE {
   
   
         ?Kante a otd:Relation;
-          otd:zoningPlan <https://lod.opentransportdata.swiss/zoningPlan/libero/libero-abo-libero> ;
-#          otd:zoningPlan <https://lod.opentransportdata.swiss/zoningPlan/libero/libero-billett-libero> ;
+          otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-abo-libero> ;
+#          otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-libero> ;
             
           gtfs:stop ?haltestelle .
   
   MINUS {
           ?Kante a otd:Relation;
-#          otd:zoningPlan <https://lod.opentransportdata.swiss/zoningPlan/libero/libero/libero-billett-libero> ;
-          otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-uberzonenplan-libero-tageskarte	> ;
+#          otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero/libero-billett-libero> ;
+          otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-uberzonenplan-libero-tageskarte> ;
 
           gtfs:stop ?haltestelle .
   }

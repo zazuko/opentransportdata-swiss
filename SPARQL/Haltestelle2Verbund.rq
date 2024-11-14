@@ -8,7 +8,7 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 
 #SELECT DISTINCT gibt nur einzigartige Kombinationen aus.
 SELECT DISTINCT ?verbund_name ?didok ?haltestelle_bezeichnung
-FROM <https://linked.opendata.swiss/graph/sbb/nova>
+FROM <https://lindas.admin.ch/sbb/nova>
 WHERE {
   	# Ausgabe zu Zonenplan
   	?Kante a otd:Relation;
@@ -21,7 +21,7 @@ WHERE {
     
   	FILTER(?Zonenplan IN (<https://lod.opentransportdata.swiss/zoningplan/libero/libero-abo-libero>))
 
-  	SERVICE <https://lod.opentransportdata.swiss/query> {
+  	SERVICE <https://int.lindas.admin.ch/query> {
     ?haltestelle rdfs:label ?haltestelle_bezeichnung;
 		dcterms:identifier ?didok.
 }

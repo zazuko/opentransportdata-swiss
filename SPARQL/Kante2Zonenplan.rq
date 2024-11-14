@@ -6,16 +6,16 @@ PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
 PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 
-# Select: w�hlt im Ergebnis die Variablen aus, welche angezeigt werden sollen .
+# Select: wählt im Ergebnis die Variablen aus, welche angezeigt werden sollen .
 #SELECT ?Zonenplan ?zonenplan_name ?zone ?zone_name
 SELECT *
-FROM <https://linked.opendata.swiss/graph/sbb/nova>
+FROM <https://lindas.admin.ch/sbb/nova>
 WHERE {
   	# Ausgabe zu Zonenplan
   	?Kante a otd:Relation;
   		otd:zoningPlan ?Zonenplan;
   		gtfs:stop ?haltestelle.
   
-  	FILTER(?Zonenplan IN (<https://lod.opentransportdata.swiss/zoningplan/Onde%20Verte/Onde%20verte%20Billett>))
+  	FILTER(?Zonenplan IN (<https://lod.opentransportdata.swiss/zoningplan/onde-verte/onde-verte-billett>))
 } 
 LIMIT 1000

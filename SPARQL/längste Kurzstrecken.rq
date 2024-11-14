@@ -14,8 +14,8 @@ WHERE {
   ?Relation a otd:Relation;
        otd:zoningPlan ?Zonenplan;
        otd:routeType ?RouteType;
-    schema:arrivalStation ?stop1 ;
-    schema:departureStation ?stop2.
+    gtfs:stop ?stop1 ;
+    gtfs:stop ?stop2.
 
   ?stop1 geo:hasGeometry ?geom1 ;
          rdfs:label ?stNam1;
@@ -36,7 +36,7 @@ WHERE {
 
   BIND(STRDT(concat("LINESTRING ",strafter(strbefore(str(?loc1),")"),"POINT"), ",", strafter(str(?loc2),"POINT(")), <http://www.opengis.net/ont/geosparql#wktLiteral> )	as ?line)
  
- FILTER (?RouteType="KURZ"^^xsd:string)
+FILTER (?RouteType="KURZ"^^xsd:string)
 
 } 
 ORDER BY DESC (?distance) 

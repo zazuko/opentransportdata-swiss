@@ -5,7 +5,7 @@ prefix otd: <https://lod.opentransportdata.swiss/vocab/>
 
 
 SELECT * 
-FROM <https://linked.opendata.swiss/graph/sbb/nova>
+FROM <https://lindas.admin.ch/sbb/nova>
 WHERE {
   ?Zonenplan a otd:ZoningPlan; 
                rdfs:label     ?namen.

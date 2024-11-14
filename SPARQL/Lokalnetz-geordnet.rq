@@ -6,7 +6,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 prefix otd: <https://lod.opentransportdata.swiss/vocab/>
 
 SELECT *
-FROM <https://linked.opendata.swiss/graph/sbb/nova>
+FROM <https://lindas.admin.ch/sbb/nova>
 WHERE {
   ?Kante a otd:LocalNetwork;
           rdfs:label ?name;
