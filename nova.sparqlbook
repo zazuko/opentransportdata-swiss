@@ -40,5 +40,221 @@
     "language": "sparql",
     "value": "DESCRIBE\n\n## Zurich Oerlikon\n<https://lod.opentransportdata.swiss/didok/8503006>\n<https://lod.opentransportdata.swiss/didok/8503006/geometry>",
     "metadata": {}
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "`DESCRIBE` antwortet mit einem Graph. Diesen können wir mit [Sketch](https://sketch.zazuko.com/) visualisieren, mit copy/paste der Statements ins Formularfeld \"RDF Editor\".",
+    "metadata": {}
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## Alle Haltestellen mit Kurzstrecken\n\nVerwendet man für die Abrage das Web-UI, dann wird das Resultat des Queries [auf der Karte visualisiert](https://s.zazuko.com/d2aprg) `Geo`",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# from file SPARQL/Alle Haltestellen mit Kurzstrecken.rq\nPREFIX sc: <http://purl.org/science/owl/sciencecommons/>\nPREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX dcterms: <http://purl.org/dc/terms/>\n\nSELECT distinct ?Station ?Name ?Coord ?departureID \nWHERE {\n        ?Kante a otd:Relation;\n              otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-libero>;\n              gtfs:stop ?Station .\n   \n        ?Station rdfs:label ?Name ;\n             <http://www.opengis.net/ont/geosparql#hasGeometry>/<http://www.opengis.net/ont/geosparql#asWKT> ?Coord;              \n             dcterms:identifier ?departureID .\n   } \nlimit 10000",
+    "metadata": {
+      "file": "SPARQL/Alle Haltestellen mit Kurzstrecken.rq"
+    }
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## Alle Zonepläne",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# from file SPARQL/alleZoneplane.rq\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nprefix otd: <https://lod.opentransportdata.swiss/vocab/>\n\n\nSELECT * \nFROM <https://lindas.admin.ch/sbb/nova>\nWHERE {\n  ?Zonenplan a otd:ZoningPlan; \n               rdfs:label     ?namen.\n   \n} \nLIMIT 100",
+    "metadata": {
+      "file": "SPARQL/alleZoneplane.rq"
+    }
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## GeOps Zonendaten",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# from file SPARQL/GeOpsZonendaten.rq\nPREFIX dcterm: <http://purl.org/dc/terms/>\nPREFIX dct: <http://purl.org/dc/terms/>\nPREFIX dc: <http://purl.org/dc/elements/1.1/>\nPREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX vcard: <http://www.w3.org/2006/vcard/ns#>\nPREFIX dcterms: <http://purl.org/dc/terms/>\n\n#SELECT DISTINCT ?VerbundBezeichnung ?ZonenplanBezeichnung ?ZonenCode ?VerkehrsmittelBezeichnung ?Didok ?HaltestelleBezeichnung\nSELECT ?VerbundBezeichnung ?ZonenplanBezeichnung ?ZonenCode ?ZonenEignerCode ?ZonenEignerKuerzel ?VerkehrsmittelBezeichnung ?stop1id ?stop1Name ?stop2id ?stop2Name\nWHERE {\n  ?Verbund a otd:Alliance ;\n    rdfs:label ?VerbundBezeichnung .\n  \n  ?Zonenplan a otd:ZoningPlan ;\n    otd:alliance ?Verbund ;\n    otd:zone ?Zone ;\n    rdfs:label ?ZonenplanBezeichnung .\n  \n  ?Zone a otd:Zone ;\n    schema:identifier ?ZonenCode;\n    schema:provider ?ZonenEigner.\n  \n  ?ZonenEigner a schema:Organization;\n               schema:alternateName ?ZonenEignerKuerzel;\n               schema:identifier ?ZonenEignerCode.\n  \n  ?Relation a otd:Relation;\n    otd:zone ?Zone;\n    otd:meanOfTransport ?VerkehrsmittelBezeichnung;\n    gtfs:stop ?stop1 ;\n    gtfs:stop ?stop2 .\n  \n  ?stop1 rdfs:label ?stop1Name ;\n    dcterms:identifier ?stop1id .\n  \n  ?stop2 rdfs:label ?stop2Name ;\n    dcterms:identifier ?stop2id .\n  \n  FILTER( xsd:integer(?stop1id) > xsd:integer(?stop2id) )\n} LIMIT 100",
+    "metadata": {
+      "file": "SPARQL/GeOpsZonendaten.rq"
+    }
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## Haltestellen im Verbund",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# from file SPARQL/Haltestelle2Verbund.rq\nPREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX vcard: <http://www.w3.org/2006/vcard/ns#>\nPREFIX dcterms: <http://purl.org/dc/terms/>\n\n#SELECT DISTINCT gibt nur einzigartige Kombinationen aus.\nSELECT DISTINCT ?verbund_name ?didok ?haltestelle_bezeichnung\nFROM <https://lindas.admin.ch/sbb/nova>\nWHERE {\n  \t# Ausgabe zu Zonenplan\n  \t?Kante a otd:Relation;\n  \t\totd:zoningPlan ?Zonenplan;\n  \t\tgtfs:stop ?haltestelle.\n  \n  \t?Zonenplan otd:alliance ?verbund.\n  \n  \t?verbund rdfs:label ?verbund_name.\n    \n  \tFILTER(?Zonenplan IN (<https://lod.opentransportdata.swiss/zoningplan/libero/libero-abo-libero>))\n\n  \tSERVICE <https://int.lindas.admin.ch/query> {\n    ?haltestelle rdfs:label ?haltestelle_bezeichnung;\n\t\tdcterms:identifier ?didok.\n}\n} \nLIMIT 1000",
+    "metadata": {
+      "file": "SPARQL/Haltestelle2Verbund.rq"
+    }
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## Haltestellen zum Zonenplan Onde Verte Billet\n\nVerwendet man für die Abrage das Web-UI, dann wird das Resultat des Queries [auf der Karte visualisiert](https://s.zazuko.com/B8Bw7f) `Geo`",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# from file SPARQL/Haltestelle2ZplOndeVerteBillet_geometry.rq\nPREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX vcard: <http://www.w3.org/2006/vcard/ns#>\nPREFIX dcterms: <http://purl.org/dc/terms/>\n\n# Dieses Query gibt alle Haltestellen zum Zonenplan Onde Verte Billet aus und stellt sie grafisch dar. \nSELECT DISTINCT ?geometrie\nWHERE {\n    # Ausgabe zu Zonenplan\n    ?Kante a otd:Relation;\n        otd:zoningPlan ?Zonenplan;\n        gtfs:stop ?haltestelle.\n  \n    FILTER(?Zonenplan IN (<https://lod.opentransportdata.swiss/zoningplan/onde-verte/onde-verte-billett>))\n  \t\n    ?haltestelle <http://www.opengis.net/ont/geosparql#hasGeometry>/<http://www.opengis.net/ont/geosparql#asWKT> ?geometrie\n} \n",
+    "metadata": {
+      "file": "SPARQL/Haltestelle2ZplOndeVerteBillet_geometry.rq"
+    }
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## Kante2Zonenplan",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# from file SPARQL/Kante2Zonenplan.rq\nPREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX vcard: <http://www.w3.org/2006/vcard/ns#>\nPREFIX dcterms: <http://purl.org/dc/terms/>\n\n# Select: wählt im Ergebnis die Variablen aus, welche angezeigt werden sollen .\n#SELECT ?Zonenplan ?zonenplan_name ?zone ?zone_name\nSELECT *\nFROM <https://lindas.admin.ch/sbb/nova>\nWHERE {\n  \t# Ausgabe zu Zonenplan\n  \t?Kante a otd:Relation;\n  \t\totd:zoningPlan ?Zonenplan;\n  \t\tgtfs:stop ?haltestelle.\n  \n  \tFILTER(?Zonenplan IN (<https://lod.opentransportdata.swiss/zoningplan/onde-verte/onde-verte-billett>))\n} \nLIMIT 1000",
+    "metadata": {
+      "file": "SPARQL/Kante2Zonenplan.rq"
+    }
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## Kurzstrecken ab einer Station",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX dcterms: <http://purl.org/dc/terms/>\nPREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX schema: <http://schema.org/>\n\nSELECT ?departure ?departureCoord ?departureID ?arrival ?arrivalCoord ?arrivalID\nWHERE {\n        ?Kante a otd:Relation;\n              otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-libero>;\n              gtfs:stop ?departurePoint ;\n              gtfs:stop ?arrivalPoint .\n  \n        ?departurePoint rdfs:label ?departure ;\n             <http://www.opengis.net/ont/geosparql#hasGeometry>/<http://www.opengis.net/ont/geosparql#asWKT> ?departureCoord;              \n             dcterms:identifier ?departureID .\n  \n         ?arrivalPoint rdfs:label ?arrival ;\n             <http://www.opengis.net/ont/geosparql#hasGeometry>/<http://www.opengis.net/ont/geosparql#asWKT> ?arrivalCoord;                   \n            dcterms:identifier ?arrivalID. \n  \n  FILTER(?departurePoint IN  (<https://lod.opentransportdata.swiss/didok/8580425>))\n  } \n  \nlimit 100",
+    "metadata": {
+      "file": "SPARQL/Kurzstrecken_ab_einer_Station.rq"
+    }
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## Längste Kurzstrecken\n\nHinweis: Query funktioniert nicht mehr, da die Angabe zu `otd:routeType` auf der Relation fehlt.",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# from file SPARQL/längste Kurzstrecken.rq\nPREFIX sc: <http://purl.org/science/owl/sciencecommons/>\nPREFIX dcterm: <http://purl.org/dc/terms/>\nPREFIX dct: <http://purl.org/dc/terms/>\nPREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX dcterms: <http://purl.org/dc/terms/>\nprefix geo: <http://www.opengis.net/ont/geosparql#>\nprefix geof: <http://www.opengis.net/def/function/geosparql/>\nprefix unit: <http://qudt.org/vocab/unit#>\nSELECT ?Relation ?Zonenplan ?stNam1 ?stNam2 ?distance\nWHERE {\n  ?Relation a otd:Relation;\n       otd:zoningPlan ?Zonenplan;\n       otd:routeType ?RouteType;\n    gtfs:stop ?stop1 ;\n    gtfs:stop ?stop2.\n\n  ?stop1 geo:hasGeometry ?geom1 ;\n         rdfs:label ?stNam1;\n         dcterms:identifier ?didok1 .\n  \n  ?stop2 geo:hasGeometry ?geom2 ;\n          rdfs:label ?stNam2;\n         dcterms:identifier ?didok2 .\n  \n  BIND(geof:distance(?geom1, ?geom2, unit:Meter) as ?distance)\n \n  \n  ?geom1 geo:asWKT ?loc1 .    \n  ?geom2 geo:asWKT ?loc2 .\n  \n  BIND(CONCAT(\"Connection \", ?stNam1, \" - \", ?stNam2, \"/\", STR(?distance),\"m\") AS ?loc1Label)\n  BIND( ?loc1Label AS ?loc2Label)\n\n  BIND(STRDT(concat(\"LINESTRING \",strafter(strbefore(str(?loc1),\")\"),\"POINT\"), \",\", strafter(str(?loc2),\"POINT(\")), <http://www.opengis.net/ont/geosparql#wktLiteral> )\tas ?line)\n \nFILTER (?RouteType=\"KURZ\"^^xsd:string)\n\n} \nORDER BY DESC (?distance) \nLIMIT 100\n",
+    "metadata": {
+      "file": "SPARQL/längste Kurzstrecken.rq"
+    }
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## Lokalnetz geordnet",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# from file SPARQL/Lokalnetz-geordnet.rq\nPREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX dcterms: <http://purl.org/dc/terms/>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nprefix otd: <https://lod.opentransportdata.swiss/vocab/>\n\nSELECT *\nFROM <https://lindas.admin.ch/sbb/nova>\nWHERE {\n  ?Kante a otd:LocalNetwork;\n          rdfs:label ?name;\n} \n ORDER BY ASC (?name)\nLIMIT 1000\n",
+    "metadata": {
+      "file": "SPARQL/Lokalnetz-geordnet.rq"
+    }
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## Monodirektionale Kurzstrecken\nHinweis: Query funktioniert nicht",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# from file SPARQL/monodirektionale-kurzstrecken.rq\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX vcard: <http://www.w3.org/2006/vcard/ns#>\nPREFIX dcterms: <http://purl.org/dc/terms/>\n\nSELECT * WHERE {\n  \n  { SELECT ?startingPoint (COUNT(?Kante) AS ?kurzstreckeDeparture) WHERE {\n        ?Kante a otd:Relation;\n          otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-libero>;\n          schema:departureStation ?startingPoint ;\n          schema:arrivalStation ?arrivalStation .\n  \t} GROUP BY ?startingPoint\n  }\n#  ?arrivalStation rdfs:label ?arrivalStationLabel .\n  \n  { SELECT (COUNT(?kante2) AS ?kurzstrecke2Departure) WHERE {\n  \t\t?kante2 a otd:Relation;\n          otd:zoningPlan <https://lod.opentransportdata.swiss/zoningPlan/libero/libero-billett-libero>;\n          schema:departureStation ?arrivalStation;\n          schema:arrivalStation ?startingPoint .\n  \t} GROUP BY ?startingPoint\n  }\n  #?kante2Kantenende rdfs:label ?kante2KantenendeLabel .\n\n   FILTER( ?kurzstreckeDeparture != ?kurzstrecke2Departure)\n\n  } ",
+    "metadata": {
+      "file": "SPARQL/monodirektionale-kurzstrecken.rq"
+    }
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## Visualisierung Haltestellen eines Verbund\n\n(Duplikat/Variante von `Haltestelle2ZplOndeVerteBillet_geometry.rq`)",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# from file SPARQL/VisualisierungHaltestellenEinesVerbund.rq\nPREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX vcard: <http://www.w3.org/2006/vcard/ns#>\nPREFIX dcterms: <http://purl.org/dc/terms/>\n\n# Select: wählt die Variablen aus, welche angezeigt werden sollen im Ergebnis.\n\nSELECT DISTINCT ?geometrie\n\nWHERE {\n    # Ausgabe zu Zonenplan\n    ?Kante a otd:Relation;\n        otd:zoningPlan ?Zonenplan;\n        gtfs:stop ?haltestelle.\n  \n    FILTER(?Zonenplan IN (<https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-libero>))\n\n    ?haltestelle <http://www.opengis.net/ont/geosparql#hasGeometry>/<http://www.opengis.net/ont/geosparql#asWKT> ?geometrie\n} \n",
+    "metadata": {
+      "file": "SPARQL/VisualisierungHaltestellenEinesVerbund.rq"
+    }
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## Zone2Zonenplan",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# from file SPARQL/Zone2Zonenplan.rq\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX vcard: <http://www.w3.org/2006/vcard/ns#>\nPREFIX dcterms: <http://purl.org/dc/terms/>\n\n# Select: wählt die Variablen aus, welche angezeigt werden sollen im Ergebnis.\nSELECT ?Zonenplan ?zonenplan_name ?zone ?zone_name\nFROM <https://lindas.admin.ch/sbb/nova>\nWHERE {\n  \t# Ausgabe zu Zonenplan\n  \t?Zonenplan a\totd:ZoningPlan;\n    \trdfs:label ?zonenplan_name;\n  \t\totd:zone ?zone.\n  \n  \t# Ausgabe zu Zone\n  \t?zone rdfs:label ?zone_name.\n} ",
+    "metadata": {
+      "file": "SPARQL/Zone2Zonenplan.rq"
+    }
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## Zone-haltestelle-geomapping-label",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# from file SPARQL/Zone-haltestelle-geomapping-label.rq\nPREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX vcard: <http://www.w3.org/2006/vcard/ns#>\nPREFIX dcterms: <http://purl.org/dc/terms/>\n\n \n\n# Select: wählt die Variablen aus, welche angezeigt werden sollen im Ergebnis.\n#SELECT ?Zonenplan ?zonenplan_name ?zone ?zone_name\nSELECT DISTINCT ?geometrie ?geometrieLabel\n#SELECT *\n#FROM <https://lindas.admin.ch/sbb/nova>\nWHERE {\n      # Ausgabe zu Zonenplan\n      ?Kante a otd:Relation;\n          otd:zoningPlan ?Zonenplan;\n          otd:zone <https://lod.opentransportdata.swiss/zone/libero/libero-abo-libero/300> ;\n          gtfs:stop ?haltestelle .\n   #       gtfs:stop <https://lod.opentransportdata.swiss/didok/8593380> . \n  \n  #FILTER( \n  \n    #  FILTER(?Zonenplan IN (<https://lod.opentransportdata.swiss/zoningplan/onde-verte/onde-verte-billett>))\n\n  \n    ?haltestelle <http://www.opengis.net/ont/geosparql#hasGeometry>/<http://www.opengis.net/ont/geosparql#asWKT> ?geometrie ;\n    \trdfs:label ?geometrieLabel .\n\n} \n",
+    "metadata": {
+      "file": "SPARQL/Zone-haltestelle-geomapping-label.rq"
+    }
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## Zonenplan Diff",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# from file SPARQL/zonenplan-diff.rq\nPREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\nPREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX vcard: <http://www.w3.org/2006/vcard/ns#>\nPREFIX dcterms: <http://purl.org/dc/terms/>\n\nSELECT DISTINCT ?haltestelle ?geometrie  ?geometrieLabel WHERE {\n  \n  \n        ?Kante a otd:Relation;\n          otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-abo-libero> ;\n#          otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-libero> ;\n            \n          gtfs:stop ?haltestelle .\n  \n  MINUS {\n          ?Kante a otd:Relation;\n#          otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero/libero-billett-libero> ;\n          otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-uberzonenplan-libero-tageskarte> ;\n\n          gtfs:stop ?haltestelle .\n  }\n  \n    ?haltestelle <http://www.opengis.net/ont/geosparql#hasGeometry>/<http://www.opengis.net/ont/geosparql#asWKT> ?geometrie ;\n    \trdfs:label ?geometrieLabelSingle ;\n  \t\tdcterms:identifier ?uic .\n  \n    BIND( CONCAT( ?geometrieLabelSingle, \" (\" ,?uic, \")\") AS ?geometrieLabel )\n\n  \n  #FILTER( CONTAINS( ?haltestelleLabel, \"Wabern\")) \n}",
+    "metadata": {
+      "file": "SPARQL/zonenplan-diff.rq"
+    }
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## Zonenplan einer Kante",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# from file SPARQL/Zonenplan einer Kante.rq\nPREFIX dcterms: <http://purl.org/dc/terms/>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nprefix otd: <https://lod.opentransportdata.swiss/vocab/>\nprefix vcard: <http://www.w3.org/2006/vcard/ns#>\n\nSELECT * \nFROM <https://lindas.admin.ch/sbb/nova>\nWHERE {\n  ?Kante a otd:Relation;\n               otd:zoningPlan ?zonenplan. \n   \n} \nLIMIT 100\n",
+    "metadata": {
+      "file": "SPARQL/Zonenplan einer Kante.rq"
+    }
   }
 ]
