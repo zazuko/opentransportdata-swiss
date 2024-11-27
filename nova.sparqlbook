@@ -140,7 +140,7 @@
   {
     "kind": 2,
     "language": "sparql",
-    "value": "PREFIX dcterms: <http://purl.org/dc/terms/>\nPREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX schema: <http://schema.org/>\n\nSELECT ?departure ?departureCoord ?departureID ?arrival ?arrivalCoord ?arrivalID\nWHERE {\n        ?Kante a otd:Relation;\n              otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-libero>;\n              gtfs:stop ?departurePoint ;\n              gtfs:stop ?arrivalPoint .\n  \n        ?departurePoint rdfs:label ?departure ;\n             <http://www.opengis.net/ont/geosparql#hasGeometry>/<http://www.opengis.net/ont/geosparql#asWKT> ?departureCoord;              \n             dcterms:identifier ?departureID .\n  \n         ?arrivalPoint rdfs:label ?arrival ;\n             <http://www.opengis.net/ont/geosparql#hasGeometry>/<http://www.opengis.net/ont/geosparql#asWKT> ?arrivalCoord;                   \n            dcterms:identifier ?arrivalID. \n  \n  FILTER(?departurePoint IN  (<https://lod.opentransportdata.swiss/didok/8580425>))\n  } \n  \nlimit 100",
+    "value": "# from file SPARQL/Kurzstrecken_ab_einer_Station.rq\nPREFIX dcterms: <http://purl.org/dc/terms/>\nPREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX schema: <http://schema.org/>\n\nSELECT ?departure ?departureCoord ?departureID ?arrival ?arrivalCoord ?arrivalID\nWHERE {\n        ?Kante a otd:Relation;\n              otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-libero>;\n              gtfs:stop ?departurePoint ;\n              gtfs:stop ?arrivalPoint .\n  \n        ?departurePoint rdfs:label ?departure ;\n             <http://www.opengis.net/ont/geosparql#hasGeometry>/<http://www.opengis.net/ont/geosparql#asWKT> ?departureCoord;              \n             dcterms:identifier ?departureID .\n  \n         ?arrivalPoint rdfs:label ?arrival ;\n             <http://www.opengis.net/ont/geosparql#hasGeometry>/<http://www.opengis.net/ont/geosparql#asWKT> ?arrivalCoord;                   \n            dcterms:identifier ?arrivalID. \n  \n  FILTER(?departurePoint IN  (<https://lod.opentransportdata.swiss/didok/8580425>))\n  } \n  \nlimit 100",
     "metadata": {
       "file": "SPARQL/Kurzstrecken_ab_einer_Station.rq"
     }
@@ -255,6 +255,20 @@
     "value": "# from file SPARQL/Zonenplan einer Kante.rq\nPREFIX dcterms: <http://purl.org/dc/terms/>\nPREFIX schema: <http://schema.org/>\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nprefix otd: <https://lod.opentransportdata.swiss/vocab/>\nprefix vcard: <http://www.w3.org/2006/vcard/ns#>\n\nSELECT * \nFROM <https://lindas.admin.ch/sbb/nova>\nWHERE {\n  ?Kante a otd:Relation;\n               otd:zoningPlan ?zonenplan. \n   \n} \nLIMIT 100\n",
     "metadata": {
       "file": "SPARQL/Zonenplan einer Kante.rq"
+    }
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## Tarifdreieck - Direkter Verkehr (DV)",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "# from file SPARQL/Tarifdreieck-DV-Relationsgebiet.rq\nPREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX schema: <http://schema.org/>\n\nSELECT ?stop1 ?stop2 ?stop1Name ?stop2Name ?tarifwert WHERE {\n\n    # Relationsgebiet \"Heiden - Rorschach Hafen\"\n    ?dvRelation otd:relationsgebiet <https://lod.opentransportdata.swiss/dv-relationsgebiet/ids__6195732000001> .\n    ?dvRelation gtfs:stop ?stop1 .\n    ?dvRelation gtfs:stop ?stop2 .\n    ?dvRelation otd:tarifwert ?tarifwert .\n    FILTER (?stop1 != ?stop2)\n\n    ?stop1 schema:name ?stop1Name .\n    ?stop2 schema:name ?stop2Name .\n\n    VALUES (?stop2 ?stop2Position) {\n        (<https://lod.opentransportdata.swiss/didok/8506354> 1)\n        (<https://lod.opentransportdata.swiss/didok/8506353> 2)\n        (<https://lod.opentransportdata.swiss/didok/8506352> 3)\n        (<https://lod.opentransportdata.swiss/didok/8506400> 4)\n        (<https://lod.opentransportdata.swiss/didok/8506278> 5)\n        (<https://lod.opentransportdata.swiss/didok/8506311> 6)\n        (<https://lod.opentransportdata.swiss/didok/8506306> 7)\n    }\n} ORDER BY ?stop1Position ?stop2Position\n\nVALUES (?stop1 ?stop1Position) {\n    (<https://lod.opentransportdata.swiss/didok/8506354> 1)\n    (<https://lod.opentransportdata.swiss/didok/8506353> 2)\n    (<https://lod.opentransportdata.swiss/didok/8506352> 3)\n    (<https://lod.opentransportdata.swiss/didok/8506400> 4)\n    (<https://lod.opentransportdata.swiss/didok/8506278> 5)\n    (<https://lod.opentransportdata.swiss/didok/8506311> 6)\n    (<https://lod.opentransportdata.swiss/didok/8506306> 7)\n}",
+    "metadata": {
+      "file": "SPARQL/Tarifdreieck-DV-Relationsgebiet.rq"
     }
   }
 ]
