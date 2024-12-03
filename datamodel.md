@@ -13,9 +13,8 @@ classDiagram
 
     Station -- Organization : provider
 
-    class Station:::atlas
-    class Organization:::atlas
-    classDef atlas fill:lightgray
+    style Station fill:lightgray
+    style Organization fill:lightgray
 ```
 
 
@@ -51,9 +50,8 @@ classDiagram
 
     Station -- Organization : provider
 
-    class Station:::atlas
-    class Organization:::atlas
-    classDef atlas fill:lightgray
+    style Station fill:lightgray
+    style Organization fill:lightgray
 ```
 
 ## RTM
@@ -93,7 +91,6 @@ classDiagram
         int priority
     }
 
-    class Station:::atlas
-    class Organization:::atlas
-    classDef atlas fill:lightgray
+    style Station fill:lightgray
+    style Organization fill:lightgray
 ```
