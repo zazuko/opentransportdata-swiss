@@ -2,13 +2,13 @@
   {
     "kind": 1,
     "language": "markdown",
-    "value": "## Was ist drin, in diesen Daten?\n\nDie Daten befinden sich auf [LINDAS](https://lindas.admin.ch/) in den folgenden beiden Named-Graphs:\n- https://lindas.admin.ch/sbb/nova\n- https://lindas.admin.ch/sbb/didok\n\nMit dem ersten Query erstellen wir uns ein Inhaltsverzeichnis über diese zwei Graphen. Es zeigt, von welchen Klassen es wieviele Instanzen im jeweiligen Named-Graph hat:",
+    "value": "## Was ist drin, in diesen Daten?\n\nDie Daten befinden sich auf [LINDAS](https://lindas.admin.ch/) in den folgenden beiden Named-Graphs:\n- https://lindas.admin.ch/sbb/nova\n- https://lindas.admin.ch/sbb/nova-dv\n- https://lindas.admin.ch/sbb/didok\n\nMit dem ersten Query erstellen wir uns ein Inhaltsverzeichnis über diese zwei Graphen. Es zeigt, von welchen Klassen es wieviele Instanzen im jeweiligen Named-Graph hat:",
     "metadata": {}
   },
   {
     "kind": 2,
     "language": "sparql",
-    "value": "SELECT ?g ?cls (COUNT(?s) AS ?count) WHERE {\n  {\n    SELECT  DISTINCT ?g \n    WHERE  {\n      GRAPH ?g {\n      } \n    }\n  }\n  GRAPH ?g {\n    ?s a ?cls\n  }\n} GROUP BY ?g  ?cls\nORDER BY ?g ?cls\n\nVALUES ?g {\n    <https://lindas.admin.ch/sbb/nova>\n    <https://lindas.admin.ch/sbb/didok>\n}\n",
+    "value": "SELECT ?g ?cls (COUNT(?s) AS ?count) WHERE {\n  {\n    SELECT  DISTINCT ?g \n    WHERE  {\n      GRAPH ?g {\n      } \n    }\n  }\n  GRAPH ?g {\n    ?s a ?cls\n  }\n} GROUP BY ?g  ?cls\nORDER BY ?g ?cls\n\nVALUES ?g {\n    <https://lindas.admin.ch/sbb/nova>\n    <https://lindas.admin.ch/sbb/nova-dv>\n    <https://lindas.admin.ch/sbb/didok>\n}\n",
     "metadata": {}
   },
   {
