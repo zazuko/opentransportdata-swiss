@@ -2,6 +2,7 @@
 
 Die Daten befinden sich auf [LINDAS](https://lindas.admin.ch/) in den folgenden beiden Named-Graphs:
 - https://lindas.admin.ch/sbb/nova
+- https://lindas.admin.ch/sbb/nova-dv
 - https://lindas.admin.ch/sbb/didok
 
 Mit dem ersten Query erstellen wir uns ein Inhaltsverzeichnis über diese zwei Graphen. Es zeigt, von welchen Klassen es wieviele Instanzen im jeweiligen Named-Graph hat:
@@ -23,6 +24,7 @@ ORDER BY ?g ?cls
 
 VALUES ?g {
     <https://lindas.admin.ch/sbb/nova>
+    <https://lindas.admin.ch/sbb/nova-dv>
     <https://lindas.admin.ch/sbb/didok>
 }
 
@@ -513,4 +515,44 @@ WHERE {
 } 
 LIMIT 100
 
+```
+## Tarifdreieck - Direkter Verkehr (DV)
+
+```sparql
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
+PREFIX schema: <http://schema.org/>
+
+SELECT ?stop1 ?stop2 ?stop1Name ?stop2Name ?tarifwert WHERE {
+
+    # Relationsgebiet "Heiden - Rorschach Hafen"
+    ?dvRelation otd:relationsgebiet <https://lod.opentransportdata.swiss/dv-relationsgebiet/ids__6195732000001> .
+    ?dvRelation gtfs:stop ?stop1 .
+    ?dvRelation gtfs:stop ?stop2 .
+    ?dvRelation otd:tarifwert ?tarifwert .
+    FILTER (?stop1 != ?stop2)
+
+    ?stop1 schema:name ?stop1Name .
+    ?stop2 schema:name ?stop2Name .
+
+    VALUES (?stop2 ?stop2Position) {
+        (<https://lod.opentransportdata.swiss/didok/8506354> 1)
+        (<https://lod.opentransportdata.swiss/didok/8506353> 2)
+        (<https://lod.opentransportdata.swiss/didok/8506352> 3)
+        (<https://lod.opentransportdata.swiss/didok/8506400> 4)
+        (<https://lod.opentransportdata.swiss/didok/8506278> 5)
+        (<https://lod.opentransportdata.swiss/didok/8506311> 6)
+        (<https://lod.opentransportdata.swiss/didok/8506306> 7)
+    }
+} ORDER BY ?stop1Position ?stop2Position
+
+VALUES (?stop1 ?stop1Position) {
+    (<https://lod.opentransportdata.swiss/didok/8506354> 1)
+    (<https://lod.opentransportdata.swiss/didok/8506353> 2)
+    (<https://lod.opentransportdata.swiss/didok/8506352> 3)
+    (<https://lod.opentransportdata.swiss/didok/8506400> 4)
+    (<https://lod.opentransportdata.swiss/didok/8506278> 5)
+    (<https://lod.opentransportdata.swiss/didok/8506311> 6)
+    (<https://lod.opentransportdata.swiss/didok/8506306> 7)
+}
 ```
