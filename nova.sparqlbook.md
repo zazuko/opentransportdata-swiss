@@ -556,7 +556,7 @@ VALUES (?stop1 ?stop1Position) {
     (<https://lod.opentransportdata.swiss/didok/8506306> 7)
 }
 ```
-### Alle relationen des DV bei denen die werte von Tarifwerte / effektive Kilometer anders sind wenn der Antoss Preis oder Kilometer ist
+## Alle relationen des DV bei denen die werte von Tarifwerte / effektive Kilometer anders sind wenn der Antoss Preis oder Kilometer ist
 
 Interpretation der Fragestellung:
 - Relationen haben identische Haltestellen
@@ -597,7 +597,7 @@ VALUES ?gebietLabel {
     "Heiden - Rorschach Hafen"
 }
 ```
-### Alle relationen, die es sowohl im DV wie im Zonenmodell gibt
+## Alle relationen, die es sowohl im DV wie im Zonenmodell gibt
 
 Interpretation der Fragestellung:
 - Relationen haben identische Haltestellen

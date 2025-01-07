@@ -274,7 +274,7 @@
   {
     "kind": 1,
     "language": "markdown",
-    "value": "### Alle relationen des DV bei denen die werte von Tarifwerte / effektive Kilometer anders sind wenn der Antoss Preis oder Kilometer ist\n\nInterpretation der Fragestellung:\n- Relationen haben identische Haltestellen\n- Relationen sind in Relationsgebieten mit identischem Label\n- Preistabellen unterscheiden sich im Anstosstyp\n- Relationen unterscheiden sich im Tarifwert",
+    "value": "## Alle relationen des DV bei denen die werte von Tarifwerte / effektive Kilometer anders sind wenn der Antoss Preis oder Kilometer ist\n\nInterpretation der Fragestellung:\n- Relationen haben identische Haltestellen\n- Relationen sind in Relationsgebieten mit identischem Label\n- Preistabellen unterscheiden sich im Anstosstyp\n- Relationen unterscheiden sich im Tarifwert",
     "metadata": {}
   },
   {
@@ -286,7 +286,7 @@
   {
     "kind": 1,
     "language": "markdown",
-    "value": "### Alle relationen, die es sowohl im DV wie im Zonenmodell gibt\n\nInterpretation der Fragestellung:\n- Relationen haben identische Haltestellen\n- Relationen unterscheiden sich im Typ (DV, Zoning)",
+    "value": "## Alle relationen, die es sowohl im DV wie im Zonenmodell gibt\n\nInterpretation der Fragestellung:\n- Relationen haben identische Haltestellen\n- Relationen unterscheiden sich im Typ (DV, Zoning)",
     "metadata": {}
   },
   {
