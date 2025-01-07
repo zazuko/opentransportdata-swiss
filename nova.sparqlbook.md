@@ -556,3 +556,94 @@ VALUES (?stop1 ?stop1Position) {
     (<https://lod.opentransportdata.swiss/didok/8506306> 7)
 }
 ```
+### Alle relationen des DV bei denen die werte von Tarifwerte / effektive Kilometer anders sind wenn der Antoss Preis oder Kilometer ist
+
+Interpretation der Fragestellung:
+- Relationen haben identische Haltestellen
+- Relationen sind in Relationsgebieten mit identischem Label
+- Preistabellen unterscheiden sich im Anstosstyp
+- Relationen unterscheiden sich im Tarifwert
+
+```sparql
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema: <http://schema.org/>
+
+SELECT ?gebietLabel ?stop1 ?stop2 ?stop1Name ?stop2Name  ?tarifwert1 ?tarifwert2  WHERE {
+
+    ?dvRelation1 otd:relationsgebiet/rdfs:label ?gebietLabel .
+    ?dvRelation1 otd:relationsgebiet/otd:preistabelle/otd:anstossTyp "PREIS" .
+    ?dvRelation1 gtfs:stop ?stop1 .
+    ?dvRelation1 gtfs:stop ?stop2 .
+    ?dvRelation1 otd:tarifwert ?tarifwert1 .
+
+    ?dvRelation2 otd:relationsgebiet/rdfs:label ?gebietLabel .
+    ?dvRelation2 otd:relationsgebiet/otd:preistabelle/otd:anstossTyp "KILOMETER" .
+    ?dvRelation2 gtfs:stop ?stop1 .
+    ?dvRelation2 gtfs:stop ?stop2 .
+    ?dvRelation2 otd:tarifwert ?tarifwert2 .
+    
+    FILTER (?stop1 != ?stop2)
+    FILTER (?dvRelation1 != ?dvRelation2)
+    FILTER (?tarifwert1 != ?tarifwert2)
+
+    ?stop1 schema:name ?stop1Name .
+    ?stop2 schema:name ?stop2Name .
+}
+LIMIT 100
+
+VALUES ?gebietLabel {
+    "Heiden - Rorschach Hafen"
+}
+```
+### Alle relationen, die es sowohl im DV wie im Zonenmodell gibt
+
+Interpretation der Fragestellung:
+- Relationen haben identische Haltestellen
+- Relationen unterscheiden sich im Typ (DV, Zoning)
+
+```sparql
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema: <http://schema.org/>
+
+SELECT distinct ?stop1 ?stop2 ?stop1Name ?stop2Name ?relation ?zusatz WHERE {
+    {
+        ?relation a otd:DvRelation .
+        ?relation gtfs:stop ?stop1 .
+        ?relation gtfs:stop ?stop2 .
+        ?relation otd:relationsgebiet/otd:preistabelle/rdfs:label ?zusatz .
+
+        ?zoneRelation a otd:Relation.
+        ?zoneRelation gtfs:stop ?stop1 .
+        ?zoneRelation gtfs:stop ?stop2 .
+        
+        FILTER (?stop1 != ?stop2)
+        FILTER (?relation != ?zoneRelation)
+    }
+    UNION
+    {
+        ?relation a otd:Relation .
+        ?relation gtfs:stop ?stop1 .
+        ?relation gtfs:stop ?stop2 .
+
+        ?dvRelation a otd:DvRelation.
+        ?dvRelation gtfs:stop ?Dvstop1 .
+        ?dvRelation gtfs:stop ?Dvstop2 .
+        
+        FILTER (?stop1 != ?stop2)
+        FILTER (?relation != ?dvRelation)
+    }
+
+    ?stop1 schema:name ?stop1Name .
+    ?stop2 schema:name ?stop2Name .
+}
+ORDER BY ?relation
+LIMIT 100
+
+VALUES (?stop1 ?stop2) {
+	(<https://lod.opentransportdata.swiss/didok/8504300> <https://lod.opentransportdata.swiss/didok/8504414>)
+}
+```

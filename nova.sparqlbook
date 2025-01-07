@@ -270,5 +270,29 @@
     "metadata": {
       "file": "SPARQL/Tarifdreieck-DV-Relationsgebiet.rq"
     }
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "### Alle relationen des DV bei denen die werte von Tarifwerte / effektive Kilometer anders sind wenn der Antoss Preis oder Kilometer ist\n\nInterpretation der Fragestellung:\n- Relationen haben identische Haltestellen\n- Relationen sind in Relationsgebieten mit identischem Label\n- Preistabellen unterscheiden sich im Anstosstyp\n- Relationen unterscheiden sich im Tarifwert",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX schema: <http://schema.org/>\n\nSELECT ?gebietLabel ?stop1 ?stop2 ?stop1Name ?stop2Name  ?tarifwert1 ?tarifwert2  WHERE {\n\n    ?dvRelation1 otd:relationsgebiet/rdfs:label ?gebietLabel .\n    ?dvRelation1 otd:relationsgebiet/otd:preistabelle/otd:anstossTyp \"PREIS\" .\n    ?dvRelation1 gtfs:stop ?stop1 .\n    ?dvRelation1 gtfs:stop ?stop2 .\n    ?dvRelation1 otd:tarifwert ?tarifwert1 .\n\n    ?dvRelation2 otd:relationsgebiet/rdfs:label ?gebietLabel .\n    ?dvRelation2 otd:relationsgebiet/otd:preistabelle/otd:anstossTyp \"KILOMETER\" .\n    ?dvRelation2 gtfs:stop ?stop1 .\n    ?dvRelation2 gtfs:stop ?stop2 .\n    ?dvRelation2 otd:tarifwert ?tarifwert2 .\n    \n    FILTER (?stop1 != ?stop2)\n    FILTER (?dvRelation1 != ?dvRelation2)\n    FILTER (?tarifwert1 != ?tarifwert2)\n\n    ?stop1 schema:name ?stop1Name .\n    ?stop2 schema:name ?stop2Name .\n}\nLIMIT 100\n\nVALUES ?gebietLabel {\n    \"Heiden - Rorschach Hafen\"\n}",
+    "metadata": {}
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "### Alle relationen, die es sowohl im DV wie im Zonenmodell gibt\n\nInterpretation der Fragestellung:\n- Relationen haben identische Haltestellen\n- Relationen unterscheiden sich im Typ (DV, Zoning)",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX schema: <http://schema.org/>\n\nSELECT distinct ?stop1 ?stop2 ?stop1Name ?stop2Name ?relation ?zusatz WHERE {\n    {\n        ?relation a otd:DvRelation .\n        ?relation gtfs:stop ?stop1 .\n        ?relation gtfs:stop ?stop2 .\n        ?relation otd:relationsgebiet/otd:preistabelle/rdfs:label ?zusatz .\n\n        ?zoneRelation a otd:Relation.\n        ?zoneRelation gtfs:stop ?stop1 .\n        ?zoneRelation gtfs:stop ?stop2 .\n        \n        FILTER (?stop1 != ?stop2)\n        FILTER (?relation != ?zoneRelation)\n    }\n    UNION\n    {\n        ?relation a otd:Relation .\n        ?relation gtfs:stop ?stop1 .\n        ?relation gtfs:stop ?stop2 .\n\n        ?dvRelation a otd:DvRelation.\n        ?dvRelation gtfs:stop ?Dvstop1 .\n        ?dvRelation gtfs:stop ?Dvstop2 .\n        \n        FILTER (?stop1 != ?stop2)\n        FILTER (?relation != ?dvRelation)\n    }\n\n    ?stop1 schema:name ?stop1Name .\n    ?stop2 schema:name ?stop2Name .\n}\nORDER BY ?relation\nLIMIT 100\n\nVALUES (?stop1 ?stop2) {\n\t(<https://lod.opentransportdata.swiss/didok/8504300> <https://lod.opentransportdata.swiss/didok/8504414>)\n}",
+    "metadata": {}
   }
 ]
