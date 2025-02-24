@@ -30,6 +30,12 @@
     "metadata": {}
   },
   {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n\nSELECT DISTINCT ?s ?l\nWHERE {\n  ?s a <https://lod.opentransportdata.swiss/vocab/DvPreistabelle> .\n  ?s rdfs:label 'LEX Preistabelle Alpbus Abo T74'.\n  \n#   ?s ?p ?l.\n#   (?l ?score) <tag:stardog:api:property:textMatch> 'LEX Preistabelle Alpbus Abo T74'.\n} LIMIT 10\n",
+    "metadata": {}
+  },
+  {
     "kind": 1,
     "language": "markdown",
     "value": "Mit `DESCRIBE` können wir uns anschliessend alle Statements zu einer oder mehreren Resourcen ansehen. Beispielsweise für eine Haltestelle und ihre Geometrie:",
@@ -292,7 +298,19 @@
   {
     "kind": 2,
     "language": "sparql",
-    "value": "PREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX schema: <http://schema.org/>\n\nSELECT distinct ?stop1 ?stop2 ?stop1Name ?stop2Name ?relation ?zusatz WHERE {\n    {\n        ?relation a otd:DvRelation .\n        ?relation gtfs:stop ?stop1 .\n        ?relation gtfs:stop ?stop2 .\n        ?relation otd:relationsgebiet/otd:preistabelle/rdfs:label ?zusatz .\n\n        ?zoneRelation a otd:Relation.\n        ?zoneRelation gtfs:stop ?stop1 .\n        ?zoneRelation gtfs:stop ?stop2 .\n        \n        FILTER (?stop1 != ?stop2)\n        FILTER (?relation != ?zoneRelation)\n    }\n    UNION\n    {\n        ?relation a otd:Relation .\n        ?relation gtfs:stop ?stop1 .\n        ?relation gtfs:stop ?stop2 .\n\n        ?dvRelation a otd:DvRelation.\n        ?dvRelation gtfs:stop ?Dvstop1 .\n        ?dvRelation gtfs:stop ?Dvstop2 .\n        \n        FILTER (?stop1 != ?stop2)\n        FILTER (?relation != ?dvRelation)\n    }\n\n    ?stop1 schema:name ?stop1Name .\n    ?stop2 schema:name ?stop2Name .\n}\nORDER BY ?relation\nLIMIT 100\n\nVALUES (?stop1 ?stop2) {\n\t(<https://lod.opentransportdata.swiss/didok/8504300> <https://lod.opentransportdata.swiss/didok/8504414>)\n}",
+    "value": "PREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX schema: <http://schema.org/>\n\nSELECT distinct ?stop1 ?stop2 ?stop1Name ?stop2Name ?relation ?zusatz WHERE {\n    {\n        ?relation a otd:DvRelation .\n        ?relation gtfs:stop ?stop1 .\n        ?relation gtfs:stop ?stop2 .\n        ?relation otd:relationsgebiet/otd:preistabelle/rdfs:label ?zusatz .\n\n        ?zoneRelation a otd:Relation.\n        ?zoneRelation gtfs:stop ?stop1 .\n        ?zoneRelation gtfs:stop ?stop2 .\n        \n        FILTER (?stop1 != ?stop2)\n        FILTER (?relation != ?zoneRelation)\n    }\n    UNION\n    {\n        ?relation a otd:Relation .\n        ?relation gtfs:stop ?stop1 .\n        ?relation gtfs:stop ?stop2 .\n\n        ?dvRelation a otd:DvRelation.\n        ?dvRelation gtfs:stop ?stop1 .\n        ?dvRelation gtfs:stop ?stop2 .\n        \n        FILTER (?stop1 != ?stop2)\n        FILTER (?relation != ?dvRelation)\n    }\n\n    ?stop1 schema:name ?stop1Name .\n    ?stop2 schema:name ?stop2Name .\n}\nORDER BY ?relation\nLIMIT 100\n\nVALUES (?stop1 ?stop2) {\n\t(<https://lod.opentransportdata.swiss/didok/8504300> <https://lod.opentransportdata.swiss/didok/8504414>)\n}",
+    "metadata": {}
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## Vorberechnete Preistabellen\n\nVorberechnete Preistabellen können unterschiedlich ausgeprägt sein, beispielsweise:\n\n- Für ein oder mehrere Kundensegmente\n- Für ein oder mehrere Klassen\n- Mit oder ohne Fahrart\n- Mit oder ohne Geltungsdauer\n\nNachfolgend ein paar Beispiele ...",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX schema: <http://schema.org/>\n\nSELECT ?tarifWertVon ?tarifWertBis ?customerSegment ?class ?fahrart ?geltungsdauerUnit ?geltungsdauerValue ?price ?priceCurrency\nWHERE {\n    BIND(<https://lod.opentransportdata.swiss/dv-preistabelle/ids__91048544002> AS ?preistabelle)   # ein CS, eine klasse, ohne fahrart, mit geltungsdauer\n    # BIND(<https://lod.opentransportdata.swiss/dv-preistabelle/ids__192091332001> AS ?preistabelle)  # mehrere CS, eine klasse, ohne fahrart, mit geltungsdauer\n    # BIND(<https://lod.opentransportdata.swiss/dv-preistabelle/ids__14056194> AS ?preistabelle)      # mehrere CS, mehrere klassen, ohne fahrart, mit geltungsdauer\n\n    # BIND(<https://lod.opentransportdata.swiss/dv-preistabelle/ids__14056192> AS ?preistabelle)  # mit fahrart, ohne geltungsdauer   \n\n    ?preistabelle otd:preisauspraegung ?preisauspraegung .\n\n    ?preisauspraegung \n        otd:tarifWertVon ?tarifWertVon ;\n        otd:tarifWertBis ?tarifWertBis ;\n        \n        otd:customerSegment ?customerSegment ;\n\n        otd:class ?class ;\n\n        schema:price ?price ;\n        schema:priceCurrency ?priceCurrency .\n\n    OPTIONAL {\n        ?preisauspraegung otd:fahrart ?fahrart .\n    }\n\n    OPTIONAL {\n        ?preisauspraegung schema:billingDuration [\n            schema:value ?geltungsdauerValue ;\n            schema:unitText ?geltungsdauerUnit\n        ]\n    }\n        \n} ORDER BY ?tarifWertVon ?tarifWertBis ?customerSegment ?class ?fahrart ?geltungsdauerUnit ?geltungsdauerValue",
     "metadata": {}
   }
 ]
