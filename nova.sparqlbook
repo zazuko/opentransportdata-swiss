@@ -304,7 +304,19 @@
   {
     "kind": 1,
     "language": "markdown",
-    "value": "## Vorberechnete Preistabellen\n\nVorberechnete Preistabellen können unterschiedlich ausgeprägt sein, beispielsweise:\n\n- Für ein oder mehrere Kundensegmente\n- Für ein oder mehrere Klassen\n- Mit oder ohne Fahrart\n- Mit oder ohne Geltungsdauer\n\nNachfolgend ein paar Beispiele ...",
+    "value": "## Vorberechnete Preistabellen\n\nRelationsgebiete mit vorberechneten Preistabellen :",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "prefix gtfs: <http://vocab.gtfs.org/terms#>\nprefix otd: <https://lod.opentransportdata.swiss/vocab/>\nprefix schema: <http://schema.org/>\nprefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n\n# select * where {\nselect ?gebietLabel ?zusatz where {\n\n    ?relationsgebiet a otd:DvRelationsgebiet ;\n        rdfs:label ?gebietLabel ;\n        otd:preistabelle ?preistabelle .\n    \n    ?preistabelle a otd:DvVorberechnetePreistabelle ;\n        rdfs:label ?zusatz .\n\n}\n# order by ?preistabelle ?relationsgebiet\norder by ?relationsgebiet ?preistabelle",
+    "metadata": {}
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "\nVorberechnete Preistabellen können unterschiedlich ausgeprägt sein, beispielsweise:\n\n- Für ein oder mehrere Kundensegmente\n- Für ein oder mehrere Klassen\n- Mit oder ohne Fahrart\n- Mit oder ohne Geltungsdauer\n\nNachfolgend ein paar Beispiele ...",
     "metadata": {}
   },
   {
