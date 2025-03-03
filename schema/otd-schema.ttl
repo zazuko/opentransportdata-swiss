@@ -15,7 +15,7 @@ otd:Alliance a rdfs:Class ;
 
 otd:CustomerSegment a rdfs:Class ;
    rdfs:label "CustomerSegment" ;
-   rdfs:comment "" .
+   rdfs:comment "Kundensegment" .
 
 otd:DvPreistabelle a rdfs:Class ;
    rdfs:label "DvPreistabelle" ;
