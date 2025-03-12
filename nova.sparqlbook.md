@@ -47,6 +47,21 @@ WHERE {
 } LIMIT 10
 
 ```
+
+```sparql
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?s ?l
+WHERE {
+  ?s a <https://lod.opentransportdata.swiss/vocab/DvPreistabelle> .
+  ?s rdfs:label 'LEX Preistabelle Alpbus Abo T74'.
+  
+#   ?s ?p ?l.
+#   (?l ?score) <tag:stardog:api:property:textMatch> 'LEX Preistabelle Alpbus Abo T74'.
+} LIMIT 10
+
+```
 Mit `DESCRIBE` können wir uns anschliessend alle Statements zu einer oder mehreren Resourcen ansehen. Beispielsweise für eine Haltestelle und ihre Geometrie:
 
 ```sparql
@@ -630,8 +645,8 @@ SELECT distinct ?stop1 ?stop2 ?stop1Name ?stop2Name ?relation ?zusatz WHERE {
         ?relation gtfs:stop ?stop2 .
 
         ?dvRelation a otd:DvRelation.
-        ?dvRelation gtfs:stop ?Dvstop1 .
-        ?dvRelation gtfs:stop ?Dvstop2 .
+        ?dvRelation gtfs:stop ?stop1 .
+        ?dvRelation gtfs:stop ?stop2 .
         
         FILTER (?stop1 != ?stop2)
         FILTER (?relation != ?dvRelation)
@@ -645,5 +660,201 @@ LIMIT 100
 
 VALUES (?stop1 ?stop2) {
 	(<https://lod.opentransportdata.swiss/didok/8504300> <https://lod.opentransportdata.swiss/didok/8504414>)
+}
+```
+## Vorberechnete Preistabellen
+
+Relationsgebiete mit vorberechneten Preistabellen :
+
+```sparql
+prefix gtfs: <http://vocab.gtfs.org/terms#>
+prefix otd: <https://lod.opentransportdata.swiss/vocab/>
+prefix schema: <http://schema.org/>
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+# select * where {
+select ?gebietLabel ?zusatz where {
+
+    ?relationsgebiet a otd:DvRelationsgebiet ;
+        rdfs:label ?gebietLabel ;
+        otd:preistabelle ?preistabelle .
+    
+    ?preistabelle a otd:DvVorberechnetePreistabelle ;
+        rdfs:label ?zusatz .
+
+}
+# order by ?preistabelle ?relationsgebiet
+order by ?relationsgebiet ?preistabelle
+```
+
+Vorberechnete Preistabellen können unterschiedlich ausgeprägt sein, beispielsweise:
+
+- Für ein oder mehrere Kundensegmente
+- Für ein oder mehrere Klassen
+- Mit oder ohne Fahrart
+- Mit oder ohne Geltungsdauer
+
+Nachfolgend ein paar Beispiele ...
+
+```sparql
+PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
+PREFIX schema: <http://schema.org/>
+
+SELECT ?tarifWertVon ?tarifWertBis ?customerSegment ?class ?fahrart ?geltungsdauerUnit ?geltungsdauerValue ?price ?priceCurrency
+WHERE {
+    BIND(<https://lod.opentransportdata.swiss/dv-preistabelle/ids__91048544002> AS ?preistabelle)   # ein CS, eine klasse, ohne fahrart, mit geltungsdauer
+    # BIND(<https://lod.opentransportdata.swiss/dv-preistabelle/ids__192091332001> AS ?preistabelle)  # mehrere CS, eine klasse, ohne fahrart, mit geltungsdauer
+    # BIND(<https://lod.opentransportdata.swiss/dv-preistabelle/ids__14056194> AS ?preistabelle)      # mehrere CS, mehrere klassen, ohne fahrart, mit geltungsdauer
+
+    # BIND(<https://lod.opentransportdata.swiss/dv-preistabelle/ids__14056192> AS ?preistabelle)  # mit fahrart, ohne geltungsdauer   
+
+    ?preistabelle otd:preisauspraegung ?preisauspraegung .
+
+    ?preisauspraegung 
+        otd:tarifWertVon ?tarifWertVon ;
+        otd:tarifWertBis ?tarifWertBis ;
+        
+        otd:customerSegment ?customerSegment ;
+
+        otd:class ?class ;
+
+        schema:price ?price ;
+        schema:priceCurrency ?priceCurrency .
+
+    OPTIONAL {
+        ?preisauspraegung otd:fahrart ?fahrart .
+    }
+
+    OPTIONAL {
+        ?preisauspraegung schema:billingDuration [
+            schema:value ?geltungsdauerValue ;
+            schema:unitText ?geltungsdauerUnit
+        ]
+    }
+        
+} ORDER BY ?tarifWertVon ?tarifWertBis ?customerSegment ?class ?fahrart ?geltungsdauerUnit ?geltungsdauerValue
+```
+## Anwendungsbereiche
+
+Liste aller Anwendungsbereiche, die eine bestimmte Relation abdecken:
+
+```sparql
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
+PREFIX schema: <http://schema.org/>
+
+SELECT ?awbLabel ?streckenAnwendbarkeitsbedingung ?tuAnwendbarkeitsbedingung WHERE {
+    ?awb a otd:Anwendungsbereich;
+        rdfs:label ?awbLabel.
+    
+    <https://lod.opentransportdata.swiss/relation/8503006/8503400/sbb/bahn/regular> otd:anwendungsbereich ?awb .
+
+    optional { ?awb otd:streckenAnwendbarkeitsbedingung ?streckenAnwendbarkeitsbedingung; }
+    optional { ?awb otd:tuAnwendbarkeitsbedingung ?tuAnwendbarkeitsbedingung; }
+}
+```
+Anwendungsbereiche und mit Anzahl abgedeckter Relationen:
+
+```sparql
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
+PREFIX schema: <http://schema.org/>
+
+SELECT  ?label (count( distinct ?relation) AS ?zoneRelationCount)  WHERE {
+    {
+        ?awb a otd:Anwendungsbereich;
+            rdfs:label ?label.
+        ?relation a otd:Relation ;
+            otd:anwendungsbereich ?awb .
+    }
+}
+group by ?awb ?label
+order by desc( ?zoneRelationCount )
+```
+Anzahl Relationen in der Schnittmenge von GA und Halbtax:
+
+```sparql
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
+PREFIX schema: <http://schema.org/>
+
+SELECT  (count( distinct ?relation) AS ?relationCount)  WHERE {
+    BIND(<https://lod.opentransportdata.swiss/anwendungsbereich/t654-generalabonnement> AS ?awb1)      # T654 Generalabonnement
+    BIND(<https://lod.opentransportdata.swiss/anwendungsbereich/t654-halbtax-abonnement> AS ?awb2)     # T654 Halbtax-Abonnement
+    
+    ?relation a otd:Relation ;
+        otd:anwendungsbereich ?awb1 ;
+        otd:anwendungsbereich ?awb2 . 
+}
+```
+Welche Relationen sind beim GA dabei aber nicht beim Halbtax?  (in rot)
+
+Welche Relationen sind beim Halbtax dabei aber nicht beim GA?  (in grün)
+
+Darstellung auf Karte mit `Geo`.
+
+```sparql
+PREFIX gtfs: <http://vocab.gtfs.org/terms#>
+PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
+PREFIX schema: <http://schema.org/>
+PREFIX wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+
+# Red lines:   covered by GA but not Halbtax
+# Green lines: covered by Halbtax but not GA
+SELECT *
+WHERE {
+  {
+    SELECT ?relation ?relationWKTColor WHERE {
+      {
+        BIND(<https://lod.opentransportdata.swiss/anwendungsbereich/t654-generalabonnement> AS ?awb1)     # T654 Generalabonnement
+        BIND(<https://lod.opentransportdata.swiss/anwendungsbereich/t654-halbtax-abonnement> AS ?awb2)    # T654 Halbtax-Abonnement
+        BIND("red" AS ?relationWKTColor)
+
+        ?relation a otd:Relation ;
+          otd:anwendungsbereich ?awb1 .
+
+        FILTER NOT EXISTS {
+          ?relation otd:anwendungsbereich ?awb2 .
+        }
+      }
+    }
+  }
+  UNION
+  {
+    SELECT ?relation ?relationWKTColor WHERE {
+      {
+        BIND(<https://lod.opentransportdata.swiss/anwendungsbereich/t654-halbtax-abonnement> AS ?awb1)     # T654 Halbtax-Abonnement
+        BIND(<https://lod.opentransportdata.swiss/anwendungsbereich/t654-generalabonnement> AS ?awb2)      # T654 Generalabonnement
+        BIND("green" AS ?relationWKTColor)
+
+        ?relation a otd:Relation ;
+          otd:anwendungsbereich ?awb1 .
+
+        FILTER NOT EXISTS {
+          ?relation otd:anwendungsbereich ?awb2 .
+        }
+      }
+    }
+  }
+
+  ?relation a otd:Relation ;
+            gtfs:stop ?stop1 ;
+            gtfs:stop ?stop2 ;
+            otd:meanOfTransport ?meanOfTransport .
+
+  ?stop1 schema:identifier ?stop1Id .
+  ?stop2 schema:identifier ?stop2Id .
+  FILTER (?stop1Id > ?stop2Id)
+
+  ?stop1 wgs:lat ?stop1Lat ;
+         wgs:long ?stop1Long .
+  ?stop2 wgs:lat ?stop2Lat ;
+         wgs:long ?stop2Long .
+
+  BIND(STRDT(CONCAT("LINESTRING(", STR(?stop1Long), " ", STR(?stop1Lat), ", " , STR(?stop2Long), " ", STR(?stop2Lat), ")"), geo:wktLiteral) AS ?relationWKT)
+  BIND(CONCAT(COALESCE(?meanOfTransport, "-"), " ", STR(?stop1Id), " -> ", STR(?stop2Id), " ", STR(?relation)) AS ?relationWKTLabel ).
 }
 ```

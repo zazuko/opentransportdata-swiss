@@ -324,5 +324,53 @@
     "language": "sparql",
     "value": "PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX schema: <http://schema.org/>\n\nSELECT ?tarifWertVon ?tarifWertBis ?customerSegment ?class ?fahrart ?geltungsdauerUnit ?geltungsdauerValue ?price ?priceCurrency\nWHERE {\n    BIND(<https://lod.opentransportdata.swiss/dv-preistabelle/ids__91048544002> AS ?preistabelle)   # ein CS, eine klasse, ohne fahrart, mit geltungsdauer\n    # BIND(<https://lod.opentransportdata.swiss/dv-preistabelle/ids__192091332001> AS ?preistabelle)  # mehrere CS, eine klasse, ohne fahrart, mit geltungsdauer\n    # BIND(<https://lod.opentransportdata.swiss/dv-preistabelle/ids__14056194> AS ?preistabelle)      # mehrere CS, mehrere klassen, ohne fahrart, mit geltungsdauer\n\n    # BIND(<https://lod.opentransportdata.swiss/dv-preistabelle/ids__14056192> AS ?preistabelle)  # mit fahrart, ohne geltungsdauer   \n\n    ?preistabelle otd:preisauspraegung ?preisauspraegung .\n\n    ?preisauspraegung \n        otd:tarifWertVon ?tarifWertVon ;\n        otd:tarifWertBis ?tarifWertBis ;\n        \n        otd:customerSegment ?customerSegment ;\n\n        otd:class ?class ;\n\n        schema:price ?price ;\n        schema:priceCurrency ?priceCurrency .\n\n    OPTIONAL {\n        ?preisauspraegung otd:fahrart ?fahrart .\n    }\n\n    OPTIONAL {\n        ?preisauspraegung schema:billingDuration [\n            schema:value ?geltungsdauerValue ;\n            schema:unitText ?geltungsdauerUnit\n        ]\n    }\n        \n} ORDER BY ?tarifWertVon ?tarifWertBis ?customerSegment ?class ?fahrart ?geltungsdauerUnit ?geltungsdauerValue",
     "metadata": {}
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "## Anwendungsbereiche\n\nListe aller Anwendungsbereiche, die eine bestimmte Relation abdecken:",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX schema: <http://schema.org/>\n\nSELECT ?awbLabel ?streckenAnwendbarkeitsbedingung ?tuAnwendbarkeitsbedingung WHERE {\n    ?awb a otd:Anwendungsbereich;\n        rdfs:label ?awbLabel.\n    \n    <https://lod.opentransportdata.swiss/relation/8503006/8503400/sbb/bahn/regular> otd:anwendungsbereich ?awb .\n\n    optional { ?awb otd:streckenAnwendbarkeitsbedingung ?streckenAnwendbarkeitsbedingung; }\n    optional { ?awb otd:tuAnwendbarkeitsbedingung ?tuAnwendbarkeitsbedingung; }\n}",
+    "metadata": {}
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "Anwendungsbereiche und mit Anzahl abgedeckter Relationen:",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX schema: <http://schema.org/>\n\nSELECT  ?label (count( distinct ?relation) AS ?zoneRelationCount)  WHERE {\n    {\n        ?awb a otd:Anwendungsbereich;\n            rdfs:label ?label.\n        ?relation a otd:Relation ;\n            otd:anwendungsbereich ?awb .\n    }\n}\ngroup by ?awb ?label\norder by desc( ?zoneRelationCount )",
+    "metadata": {}
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "Anzahl Relationen in der Schnittmenge von GA und Halbtax:",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX schema: <http://schema.org/>\n\nSELECT  (count( distinct ?relation) AS ?relationCount)  WHERE {\n    BIND(<https://lod.opentransportdata.swiss/anwendungsbereich/t654-generalabonnement> AS ?awb1)      # T654 Generalabonnement\n    BIND(<https://lod.opentransportdata.swiss/anwendungsbereich/t654-halbtax-abonnement> AS ?awb2)     # T654 Halbtax-Abonnement\n    \n    ?relation a otd:Relation ;\n        otd:anwendungsbereich ?awb1 ;\n        otd:anwendungsbereich ?awb2 . \n}",
+    "metadata": {}
+  },
+  {
+    "kind": 1,
+    "language": "markdown",
+    "value": "Welche Relationen sind beim GA dabei aber nicht beim Halbtax?  (in rot)\n\nWelche Relationen sind beim Halbtax dabei aber nicht beim GA?  (in grün)\n\nDarstellung auf Karte mit `Geo`.",
+    "metadata": {}
+  },
+  {
+    "kind": 2,
+    "language": "sparql",
+    "value": "PREFIX gtfs: <http://vocab.gtfs.org/terms#>\nPREFIX otd: <https://lod.opentransportdata.swiss/vocab/>\nPREFIX schema: <http://schema.org/>\nPREFIX wgs: <http://www.w3.org/2003/01/geo/wgs84_pos#>\nPREFIX geo: <http://www.opengis.net/ont/geosparql#>\n\n# Red lines:   covered by GA but not Halbtax\n# Green lines: covered by Halbtax but not GA\nSELECT *\nWHERE {\n  {\n    SELECT ?relation ?relationWKTColor WHERE {\n      {\n        BIND(<https://lod.opentransportdata.swiss/anwendungsbereich/t654-generalabonnement> AS ?awb1)     # T654 Generalabonnement\n        BIND(<https://lod.opentransportdata.swiss/anwendungsbereich/t654-halbtax-abonnement> AS ?awb2)    # T654 Halbtax-Abonnement\n        BIND(\"red\" AS ?relationWKTColor)\n\n        ?relation a otd:Relation ;\n          otd:anwendungsbereich ?awb1 .\n\n        FILTER NOT EXISTS {\n          ?relation otd:anwendungsbereich ?awb2 .\n        }\n      }\n    }\n  }\n  UNION\n  {\n    SELECT ?relation ?relationWKTColor WHERE {\n      {\n        BIND(<https://lod.opentransportdata.swiss/anwendungsbereich/t654-halbtax-abonnement> AS ?awb1)     # T654 Halbtax-Abonnement\n        BIND(<https://lod.opentransportdata.swiss/anwendungsbereich/t654-generalabonnement> AS ?awb2)      # T654 Generalabonnement\n        BIND(\"green\" AS ?relationWKTColor)\n\n        ?relation a otd:Relation ;\n          otd:anwendungsbereich ?awb1 .\n\n        FILTER NOT EXISTS {\n          ?relation otd:anwendungsbereich ?awb2 .\n        }\n      }\n    }\n  }\n\n  ?relation a otd:Relation ;\n            gtfs:stop ?stop1 ;\n            gtfs:stop ?stop2 ;\n            otd:meanOfTransport ?meanOfTransport .\n\n  ?stop1 schema:identifier ?stop1Id .\n  ?stop2 schema:identifier ?stop2Id .\n  FILTER (?stop1Id > ?stop2Id)\n\n  ?stop1 wgs:lat ?stop1Lat ;\n         wgs:long ?stop1Long .\n  ?stop2 wgs:lat ?stop2Lat ;\n         wgs:long ?stop2Long .\n\n  BIND(STRDT(CONCAT(\"LINESTRING(\", STR(?stop1Long), \" \", STR(?stop1Lat), \", \" , STR(?stop2Long), \" \", STR(?stop2Lat), \")\"), geo:wktLiteral) AS ?relationWKT)\n  BIND(CONCAT(COALESCE(?meanOfTransport, \"-\"), \" \", STR(?stop1Id), \" -> \", STR(?stop2Id), \" \", STR(?relation)) AS ?relationWKTLabel ).\n}",
+    "metadata": {}
   }
 ]
