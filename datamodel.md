@@ -10,7 +10,7 @@ For more details and accuracy, have a look at the documentation generated from t
 *(Above links point to documentation generated from the SHACL shapes using [SHACL Play!](https://shacl-play.sparna.fr/play/doc) )*
 
 
-## Atlas
+## Atlas (Didok)
 
 ```mermaid
 ---
@@ -21,14 +21,14 @@ For more details and accuracy, have a look at the documentation generated from t
 classDiagram
     direction LR    
 
-    Station -- Organization : provider
+    Station -- "1" Organization : provider
 
     style Station fill:lightgray
     style Organization fill:lightgray
 ```
 
 
-## Zoning
+## Verbund
 
 ```mermaid
 ---
@@ -37,26 +37,30 @@ classDiagram
       hideEmptyMembersBox: true
 ---
 classDiagram
-    direction TB
+    direction LR
     
     LocalNetwork -- Zoningplan
     
-    Zoningplan -- Alliance
-    Zoningplan -- Tarif
+    Zoningplan -- "1" Alliance
+    Zoningplan -- "*" Tarif
     
-    Zone -- Zoningplan
-    Zone -- Alliance
-    Zone -- Organization : provider
-    Zone -- PayLevel
+    Zone -- "1" Organization : provider
+    Zone -- "1" Alliance
+    Zone "*" --* Zoningplan
+    Zone -- "*" PayLevel
 
-    PayLevel -- Tarif
-    Tarif -- Organization : provider
+    PayLevel "*" -- "1" Tarif
+    PayLevel -- "*" LocalNetwork
+    Tarif -- "1" Organization : provider
 
-    ZoningPriceCharacteristic -- CustomerSegment
+    ZoningPriceCharacteristic -- "*" CustomerSegment
     
-    Relation -- Zoningplan
-    Relation -- Zone
     Relation "*" o-- "2" Station : stop
+    Relation "*" -- "*" Zone
+    Relation "*" -- "*" Anwendungsbereich
+    Relation -- "*" PayLevel
+    Relation "*" -- "*" LocalNetwork
+    Relation "*" -- "*" Zoningplan
 
     Station -- Organization : provider
 
@@ -64,7 +68,8 @@ classDiagram
     style Organization fill:lightgray
 ```
 
-## RTM
+
+## Direkter Verkehr (DV)
 
 ```mermaid
 ---
@@ -75,31 +80,17 @@ classDiagram
 classDiagram
     direction LR
     DvRelationsgebiet "*" -- "1" Organization : provider
-    DvRelationsgebiet "*" -- "1" DvPreistabelle
-
-    DvRelation "*" -- "1" DvRelationsgebiet
+    DvRelationsgebiet "*" -- "1" DvPreistabelle    
 
     DvRelation "*" o-- "2" Station : stop
+    DvRelation "*" -- "1" DvRelationsgebiet
 
     Station -- Organization : provider
     
-    class DvRelationsgebiet {
-        String label
-        String klassenTyp
-        int nummer
-        int linienCode
-    }
+    DvVorberechnetePreistabelle --|> DvPreistabelle
+    DvVorberechnetePreistabelle  *-- "*" DvTarifwertpreisauspraegung
 
-    class DvPreistabelle {
-        String label
-        String anstossTyp
-    }
-
-    class DvRelation {
-        int tarifwert
-        int effektiveKilometer
-        int priority
-    }
+    DvTarifwertpreisauspraegung "*" -- "*" CustomerSegment
 
     style Station fill:lightgray
     style Organization fill:lightgray
