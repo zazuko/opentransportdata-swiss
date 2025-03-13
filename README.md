@@ -20,3 +20,8 @@ Die meisten Queries im Notebook sind in Files ausgelagert, diese Files befinden 
 [nova.sparqlbook.md](nova.sparqlbook.md) ist ein Markdown Export des Notebooks.
 
 **Hinweis**: Falls Query Resultate auf der Karte visualisiert werden sollen, das [Web-UI](https://s.zazuko.com/B8Bw7f) verwenden.
+
+
+## Datamodel
+
+Dokumentation des Datenmodells: [datamodel.md](datamodel.md)
