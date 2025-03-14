@@ -11,27 +11,27 @@
 # Classes
 otd:Alliance a rdfs:Class ;
    rdfs:label "Alliance" ;
-   rdfs:comment "" .
+   rdfs:comment "Verbund"@de .
 
 otd:CustomerSegment a rdfs:Class ;
    rdfs:label "CustomerSegment" ;
-   rdfs:comment "" .
+   rdfs:comment "Kundensegment"@de .
 
 otd:DvPreistabelle a rdfs:Class ;
    rdfs:label "DvPreistabelle" ;
-   rdfs:comment "" .
+   rdfs:comment "Preistabelle im direkten Verkehr"@de .
 
 otd:DvRelation a rdfs:Class ;
    rdfs:label "DvRelation" ;
-   rdfs:comment "" .
+   rdfs:comment "Relation im direkten Verkehr. Die Relation ist ein Verbindung zwischen zwei Haltestellen"@de .
 
 otd:DvRelationsgebiet a rdfs:Class ;
    rdfs:label "DvRelationsgebiet" ;
-   rdfs:comment "" .
+   rdfs:comment "Zusammenfassung von Relationen im direkten Verkehr"@de .
 
 otd:LocalNetwork a rdfs:Class ;
    rdfs:label "LocalNetwork" ;
-   rdfs:comment "" .
+   rdfs:comment "Lokaler Verkehr, spezial Tarife im Verbundpreissystem, wenn nur sehr lokal gefahren wird"@de .
 
 otd:PayLevel a rdfs:Class ;
    rdfs:label "PayLevel" ;
@@ -39,19 +39,19 @@ otd:PayLevel a rdfs:Class ;
 
 otd:Relation a rdfs:Class ;
    rdfs:label "Relation" ;
-   rdfs:comment "" .
+   rdfs:comment "Verbindung zwischen zwei Haltestellen"@de .
 
 otd:Tarif a rdfs:Class ;
    rdfs:label "Tarif" ;
-   rdfs:comment "" .
+   rdfs:comment "Bezeichnung eines Tarif im Verbundspreismodell"@de .
 
 otd:Zone a rdfs:Class ;
    rdfs:label "Zone" ;
-   rdfs:comment "" .
+   rdfs:comment "Zusammenfassung von einzelnen Haltestellen (geographisches Gebiet) im Zonenpreismodell"@de .
 
 otd:ZoningPlan a rdfs:Class ;
    rdfs:label "ZoningPlan" ;
-   rdfs:comment "" .
+   rdfs:comment "Zusammenfassung von Zonen in einem Plan, es kann in einem Gebiet mehrere Zonenpläne geben (z.B. für Abo, für Einzelbillet, ..)"@de .
 
 otd:ZoningPriceCharacteristic a rdfs:Class ;
    rdfs:label "ZoningPriceCharacteristic" ;
@@ -62,7 +62,7 @@ otd:ZoningPriceCharacteristic a rdfs:Class ;
 # Properties
 otd:alliance a rdf:Property ;
    rdfs:label "alliance" ;
-   rdfs:comment "" ;
+   rdfs:comment "Verbund"@de ;
    schema:rangeIncludes otd:Alliance ;
    schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
    schema:domainIncludes otd:LocalNetwork ;
@@ -76,19 +76,19 @@ otd:anstossTyp a rdf:Property ;
 
 otd:class a rdf:Property ;
    rdfs:label "class" ;
-   rdfs:comment "" ;
+   rdfs:comment "Klasse (1. Klasse, 2. Klasse)"@de ;
    schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
    schema:domainIncludes otd:ZoningPriceCharacteristic .
 
 otd:customerSegment a rdf:Property ;
    rdfs:label "customerSegment" ;
-   rdfs:comment "" ;
+   rdfs:comment "Kundensegment"@de ;
    schema:rangeIncludes otd:CustomerSegment ;
    schema:domainIncludes otd:ZoningPriceCharacteristic .
 
 otd:effektiveKilometer a rdf:Property ;
    rdfs:label "effektiveKilometer" ;
-   rdfs:comment "" ;
+   rdfs:comment "effektive Distanz einer Relation zwischen den beiden Haltestellen"@de ;
    schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
    schema:domainIncludes otd:DvRelation .
 
@@ -124,25 +124,25 @@ otd:linienCode a rdf:Property ;
 
 otd:localNetwork a rdf:Property ;
    rdfs:label "localNetwork" ;
-   rdfs:comment "" ;
+   rdfs:comment "lokales Netzwerk" ;
    schema:rangeIncludes otd:LocalNetwork ;
    schema:domainIncludes otd:PayLevel , otd:Relation .
 
 otd:maxAge a rdf:Property ;
    rdfs:label "maxAge" ;
-   rdfs:comment "" ;
+   rdfs:comment "maximales Alter"@de ;
    schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
    schema:domainIncludes otd:CustomerSegment .
 
 otd:meanOfTransport a rdf:Property ;
    rdfs:label "meanOfTransport" ;
-   rdfs:comment "" ;
+   rdfs:comment "Transportmittel (Bus, Zug, Tram, ...)"@de ;
    schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
    schema:domainIncludes otd:Relation .
 
 otd:minAge a rdf:Property ;
    rdfs:label "minAge" ;
-   rdfs:comment "" ;
+   rdfs:comment "minimales Alter"@de ;
    schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
    schema:domainIncludes otd:CustomerSegment .
 
@@ -168,7 +168,7 @@ otd:payLevelType a rdf:Property ;
 
 otd:periodOfValidity a rdf:Property ;
    rdfs:label "periodOfValidity" ;
-   rdfs:comment "" ;
+   rdfs:comment "Gültigkeitsperiode"@de ;
    schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
    schema:domainIncludes otd:PayLevel .
 
@@ -282,13 +282,13 @@ otd:typeOfDrive a rdf:Property ;
 
 otd:zone a rdf:Property ;
    rdfs:label "zone" ;
-   rdfs:comment "" ;
+   rdfs:comment "Zone"@de ;
    schema:rangeIncludes otd:Zone ;
    schema:domainIncludes otd:Relation , otd:ZoningPlan .
 
 otd:zoningPlan a rdf:Property ;
    rdfs:label "zoningPlan" ;
-   rdfs:comment "" ;
+   rdfs:comment "Zonenplan"@de ;
    schema:rangeIncludes otd:ZoningPlan ;
    schema:domainIncludes otd:LocalNetwork , otd:Relation , otd:Zone .
 
