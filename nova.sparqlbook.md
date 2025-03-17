@@ -32,6 +32,92 @@ VALUES ?g {
 ## Datenmodell
 
 ![](grafik.png)
+
+### Atlas (Didok)
+
+```mermaid
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
+classDiagram
+    direction LR    
+
+    Station -- "1" Organization : provider
+
+    style Station fill:lightgray
+    style Organization fill:lightgray
+```
+
+
+### Verbund
+
+```mermaid
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
+classDiagram
+    direction LR
+    
+    LocalNetwork -- Zoningplan
+    
+    Zoningplan -- "1" Alliance
+    Zoningplan -- "*" Tarif
+    
+    Zone -- "1" Organization : provider
+    Zone -- "1" Alliance
+    Zone "*" --* Zoningplan
+    Zone -- "*" PayLevel
+
+    PayLevel "*" -- "1" Tarif
+    PayLevel -- "*" LocalNetwork
+    Tarif -- "1" Organization : provider
+
+    ZoningPriceCharacteristic -- "*" CustomerSegment
+    
+    Relation "*" o-- "2" Station : stop
+    Relation "*" -- "*" Zone
+    Relation "*" -- "*" Anwendungsbereich
+    Relation -- "*" PayLevel
+    Relation "*" -- "*" LocalNetwork
+    Relation "*" -- "*" Zoningplan
+
+    Station -- Organization : provider
+
+    style Station fill:lightgray
+    style Organization fill:lightgray
+```
+
+
+### Direkter Verkehr (DV)
+
+```mermaid
+---
+  config:
+    class:
+      hideEmptyMembersBox: true
+---
+classDiagram
+    direction LR
+    DvRelationsgebiet "*" -- "1" Organization : provider
+    DvRelationsgebiet "*" -- "1" DvPreistabelle    
+
+    DvRelation "*" o-- "2" Station : stop
+    DvRelation "*" -- "1" DvRelationsgebiet
+
+    Station -- Organization : provider
+    
+    DvVorberechnetePreistabelle --|> DvPreistabelle
+    DvVorberechnetePreistabelle  *-- "*" DvTarifwertpreisauspraegung
+
+    DvTarifwertpreisauspraegung "*" -- "*" CustomerSegment
+
+    style Station fill:lightgray
+    style Organization fill:lightgray
+```
 ## Die IRI einer Haltestelle herausfinden
 
 Häufig benötigen wir für Abfragen die IRIs von bestimmten Resourcen, kennen diese aber nicht auswendig. Mit Hilfe der Volltextsuche können wir die IRI herausfinden, beispielsweise für die Haltestelle "Oerlikon": 
