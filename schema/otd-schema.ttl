@@ -13,6 +13,10 @@ otd:Alliance a rdfs:Class ;
    rdfs:label "Alliance" ;
    rdfs:comment "Verbund"@de .
 
+otd:Anwendungsbereich a rdfs:Class ;
+   rdfs:label "Anwendungsbereich" ;
+   rdfs:comment "Anwendungsbereich"@de .
+
 otd:CustomerSegment a rdfs:Class ;
    rdfs:label "CustomerSegment" ;
    rdfs:comment "Kundensegment"@de .
@@ -28,6 +32,14 @@ otd:DvRelation a rdfs:Class ;
 otd:DvRelationsgebiet a rdfs:Class ;
    rdfs:label "DvRelationsgebiet" ;
    rdfs:comment "Zusammenfassung von Relationen im direkten Verkehr"@de .
+
+otd:DvTarifwertpreisauspraegung a rdfs:Class ;
+   rdfs:label "DvTarifwertpreisauspraegung" ;
+   rdfs:comment ""@de .
+
+otd:DvVorberechnetePreistabelle a rdfs:Class ;
+   rdfs:label "DvVorberechnetePreistabelle" ;
+   rdfs:comment ""@de .
 
 otd:LocalNetwork a rdfs:Class ;
    rdfs:label "LocalNetwork" ;
@@ -74,6 +86,12 @@ otd:anstossTyp a rdf:Property ;
    schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
    schema:domainIncludes otd:DvPreistabelle .
 
+otd:anwendungsbereich a rdf:Property ;
+   rdfs:label "anwendungsbereich" ;
+   rdfs:comment ""@de ;
+   schema:rangeIncludes otd:Anwendungsbereich ;
+   schema:domainIncludes otd:Relation .
+
 otd:class a rdf:Property ;
    rdfs:label "class" ;
    rdfs:comment "Klasse (1. Klasse, 2. Klasse)"@de ;
@@ -91,6 +109,12 @@ otd:effektiveKilometer a rdf:Property ;
    rdfs:comment "effektive Distanz einer Relation zwischen den beiden Haltestellen"@de ;
    schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
    schema:domainIncludes otd:DvRelation .
+
+otd:fahrart a rdf:Property ;
+   rdfs:label "fahrart" ;
+   rdfs:comment "Fahrart (EINFACH, RETOUR)"@de ;
+   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
+   schema:domainIncludes otd:DvTarifwertpreisauspraegung .
 
 otd:frequencyCode a rdf:Property ;
    rdfs:label "frequencyCode" ;
@@ -178,6 +202,12 @@ otd:periodOfValidityUnit a rdf:Property ;
    schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
    schema:domainIncludes otd:PayLevel .
 
+otd:preisauspraegung a rdf:Property ;
+   rdfs:label "preisauspraegung" ;
+   rdfs:comment ""@de ;
+   schema:rangeIncludes otd:DvTarifwertpreisauspraegung ;
+   schema:domainIncludes otd:DvVorberechnetePreistabelle .
+
 otd:preistabelle a rdf:Property ;
    rdfs:label "preistabelle" ;
    rdfs:comment "" ;
@@ -250,6 +280,12 @@ otd:screenTermText a rdf:Property ;
    schema:rangeIncludes rdf:langString ;
    schema:domainIncludes otd:PayLevel .
 
+otd:streckenAnwendbarkeitsbedingung a rdf:Property ;
+   rdfs:label "streckenAnwendbarkeitsbedingung" ;
+   rdfs:comment "Anwendbarkeitsbedingung bezüglich der Strecke (TEILSTRECKE, GANZE_STRECKE)"@de ;
+   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
+   schema:domainIncludes otd:Anwendungsbereich .
+
 otd:tarif a rdf:Property ;
    rdfs:label "tarif" ;
    rdfs:comment "" ;
@@ -262,6 +298,18 @@ otd:tarifwert a rdf:Property ;
    schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
    schema:domainIncludes otd:DvRelation .
 
+otd:tarifWertBis a rdf:Property ;
+   rdfs:label "tarifWertBis" ;
+   rdfs:comment ""@de ;
+   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
+   schema:domainIncludes otd:DvTarifwertpreisauspraegung .
+
+otd:tarifWertVon a rdf:Property ;
+   rdfs:label "tarifWertVon" ;
+   rdfs:comment ""@de ;
+   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
+   schema:domainIncludes otd:DvTarifwertpreisauspraegung .
+
 otd:travelTimeTolerance a rdf:Property ;
    rdfs:label "travelTimeTolerance" ;
    rdfs:comment "" ;
@@ -273,6 +321,12 @@ otd:travellerType a rdf:Property ;
    rdfs:comment "" ;
    schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
    schema:domainIncludes otd:CustomerSegment .
+
+otd:tuAnwendbarkeitsbedingung a rdf:Property ;
+   rdfs:label "tuAnwendbarkeitsbedingung" ;
+   rdfs:comment ""@de ;
+   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
+   schema:domainIncludes otd:Anwendungsbereich .
 
 otd:typeOfDrive a rdf:Property ;
    rdfs:label "typeOfDrive" ;
