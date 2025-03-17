@@ -2,6 +2,7 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix otd: <https://lod.opentransportdata.swiss/vocab/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 # Hinweise:
 # - Bei Umbenennungen von IRIs von Klassen oder Properties bitte zwecks Nachvollziehbarkeit die bestehende erste Zeile des Definitionsblocks kopieren, auskommentieren und stehen lassen
@@ -76,14 +77,14 @@ otd:alliance a rdf:Property ;
    rdfs:label "alliance" ;
    rdfs:comment "Verbund"@de ;
    schema:rangeIncludes otd:Alliance ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
+   schema:rangeIncludes xsd:string ;
    schema:domainIncludes otd:LocalNetwork ;
    schema:domainIncludes otd:Zone , otd:ZoningPlan .
 
 otd:anstossTyp a rdf:Property ;
    rdfs:label "anstossTyp" ;
    rdfs:comment "" ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
+   schema:rangeIncludes xsd:string ;
    schema:domainIncludes otd:DvPreistabelle .
 
 otd:anwendungsbereich a rdf:Property ;
@@ -95,7 +96,7 @@ otd:anwendungsbereich a rdf:Property ;
 otd:class a rdf:Property ;
    rdfs:label "class" ;
    rdfs:comment "Klasse (1. Klasse, 2. Klasse)"@de ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
+   schema:rangeIncludes xsd:string ;
    schema:domainIncludes otd:ZoningPriceCharacteristic .
 
 otd:customerSegment a rdf:Property ;
@@ -107,43 +108,43 @@ otd:customerSegment a rdf:Property ;
 otd:effektiveKilometer a rdf:Property ;
    rdfs:label "effektiveKilometer" ;
    rdfs:comment "effektive Distanz einer Relation zwischen den beiden Haltestellen"@de ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
+   schema:rangeIncludes xsd:integer ;
    schema:domainIncludes otd:DvRelation .
 
 otd:fahrart a rdf:Property ;
    rdfs:label "fahrart" ;
    rdfs:comment "Fahrart (EINFACH, RETOUR)"@de ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
+   schema:rangeIncludes xsd:string ;
    schema:domainIncludes otd:DvTarifwertpreisauspraegung .
 
 otd:frequencyCode a rdf:Property ;
    rdfs:label "frequencyCode" ;
    rdfs:comment "" ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
+   schema:rangeIncludes xsd:string ;
    schema:domainIncludes otd:ZoningPriceCharacteristic .
 
 otd:klassenTyp a rdf:Property ;
    rdfs:label "klassenTyp" ;
    rdfs:comment "" ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
+   schema:rangeIncludes xsd:string ;
    schema:domainIncludes otd:DvRelationsgebiet .
 
 otd:levelFrom a rdf:Property ;
    rdfs:label "levelFrom" ;
    rdfs:comment "" ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
+   schema:rangeIncludes xsd:integer ;
    schema:domainIncludes otd:PayLevel .
 
 otd:levelTo a rdf:Property ;
    rdfs:label "levelTo" ;
    rdfs:comment "" ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
+   schema:rangeIncludes xsd:integer ;
    schema:domainIncludes otd:PayLevel .
 
 otd:linienCode a rdf:Property ;
    rdfs:label "linienCode" ;
    rdfs:comment "" ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
+   schema:rangeIncludes xsd:integer ;
    schema:domainIncludes otd:DvRelationsgebiet .
 
 otd:localNetwork a rdf:Property ;
@@ -155,51 +156,51 @@ otd:localNetwork a rdf:Property ;
 otd:maxAge a rdf:Property ;
    rdfs:label "maxAge" ;
    rdfs:comment "maximales Alter"@de ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
+   schema:rangeIncludes xsd:integer ;
    schema:domainIncludes otd:CustomerSegment .
 
 otd:meanOfTransport a rdf:Property ;
    rdfs:label "meanOfTransport" ;
    rdfs:comment "Transportmittel (Bus, Zug, Tram, ...)"@de ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
+   schema:rangeIncludes xsd:string ;
    schema:domainIncludes otd:Relation .
 
 otd:minAge a rdf:Property ;
    rdfs:label "minAge" ;
    rdfs:comment "minimales Alter"@de ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
+   schema:rangeIncludes xsd:integer ;
    schema:domainIncludes otd:CustomerSegment .
 
 otd:nummer a rdf:Property ;
    rdfs:label "nummer" ;
    rdfs:comment "" ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
+   schema:rangeIncludes xsd:integer ;
    schema:domainIncludes otd:DvRelationsgebiet .
 
 otd:payLevel a rdf:Property ;
    rdfs:label "payLevel" ;
    rdfs:comment "" ;
    schema:rangeIncludes otd:PayLevel ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
+   schema:rangeIncludes xsd:string ;
    schema:domainIncludes otd:PayLevel ;
    schema:domainIncludes otd:Relation , otd:Tarif , otd:Zone .
 
 otd:payLevelType a rdf:Property ;
    rdfs:label "payLevelType" ;
    rdfs:comment "" ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
+   schema:rangeIncludes xsd:string ;
    schema:domainIncludes otd:PayLevel .
 
 otd:periodOfValidity a rdf:Property ;
    rdfs:label "periodOfValidity" ;
    rdfs:comment "Gültigkeitsperiode"@de ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
+   schema:rangeIncludes xsd:integer ;
    schema:domainIncludes otd:PayLevel .
 
 otd:periodOfValidityUnit a rdf:Property ;
    rdfs:label "periodOfValidityUnit" ;
    rdfs:comment "" ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
+   schema:rangeIncludes xsd:string ;
    schema:domainIncludes otd:PayLevel .
 
 otd:preisauspraegung a rdf:Property ;
@@ -235,7 +236,7 @@ otd:printTermText a rdf:Property ;
 otd:priority a rdf:Property ;
    rdfs:label "priority" ;
    rdfs:comment "" ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
+   schema:rangeIncludes xsd:integer ;
    schema:domainIncludes otd:DvRelation .
 
 otd:relationsgebiet a rdf:Property ;
@@ -247,13 +248,13 @@ otd:relationsgebiet a rdf:Property ;
 otd:relevantDiscountCancellation a rdf:Property ;
    rdfs:label "relevantDiscountCancellation" ;
    rdfs:comment "" ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#boolean> ;
+   schema:rangeIncludes xsd:boolean ;
    schema:domainIncludes otd:CustomerSegment .
 
 otd:reportingCode a rdf:Property ;
    rdfs:label "reportingCode" ;
    rdfs:comment "" ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
+   schema:rangeIncludes xsd:integer ;
    schema:domainIncludes otd:PayLevel .
 
 otd:routeDescription a rdf:Property ;
@@ -265,7 +266,7 @@ otd:routeDescription a rdf:Property ;
 otd:routeType a rdf:Property ;
    rdfs:label "routeType" ;
    rdfs:comment "" ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
+   schema:rangeIncludes xsd:string ;
    schema:domainIncludes otd:PayLevel , otd:Relation .
 
 otd:screenLabel a rdf:Property ;
@@ -283,7 +284,7 @@ otd:screenTermText a rdf:Property ;
 otd:streckenAnwendbarkeitsbedingung a rdf:Property ;
    rdfs:label "streckenAnwendbarkeitsbedingung" ;
    rdfs:comment "Anwendbarkeitsbedingung bezüglich der Strecke (TEILSTRECKE, GANZE_STRECKE)"@de ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
+   schema:rangeIncludes xsd:string ;
    schema:domainIncludes otd:Anwendungsbereich .
 
 otd:tarif a rdf:Property ;
@@ -295,43 +296,43 @@ otd:tarif a rdf:Property ;
 otd:tarifwert a rdf:Property ;
    rdfs:label "tarifwert" ;
    rdfs:comment "" ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
+   schema:rangeIncludes xsd:integer ;
    schema:domainIncludes otd:DvRelation .
 
 otd:tarifWertBis a rdf:Property ;
    rdfs:label "tarifWertBis" ;
    rdfs:comment ""@de ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
+   schema:rangeIncludes xsd:integer ;
    schema:domainIncludes otd:DvTarifwertpreisauspraegung .
 
 otd:tarifWertVon a rdf:Property ;
    rdfs:label "tarifWertVon" ;
    rdfs:comment ""@de ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
+   schema:rangeIncludes xsd:integer ;
    schema:domainIncludes otd:DvTarifwertpreisauspraegung .
 
 otd:travelTimeTolerance a rdf:Property ;
    rdfs:label "travelTimeTolerance" ;
    rdfs:comment "" ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
+   schema:rangeIncludes xsd:integer ;
    schema:domainIncludes otd:PayLevel .
 
 otd:travellerType a rdf:Property ;
    rdfs:label "travellerType" ;
    rdfs:comment "" ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
+   schema:rangeIncludes xsd:string ;
    schema:domainIncludes otd:CustomerSegment .
 
 otd:tuAnwendbarkeitsbedingung a rdf:Property ;
    rdfs:label "tuAnwendbarkeitsbedingung" ;
    rdfs:comment ""@de ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#string> ;
+   schema:rangeIncludes xsd:string ;
    schema:domainIncludes otd:Anwendungsbereich .
 
 otd:typeOfDrive a rdf:Property ;
    rdfs:label "typeOfDrive" ;
    rdfs:comment "" ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
+   schema:rangeIncludes xsd:integer ;
    schema:domainIncludes otd:PayLevel .
 
 otd:zone a rdf:Property ;
@@ -349,5 +350,5 @@ otd:zoningPlan a rdf:Property ;
 otd:zoningPriceFactor a rdf:Property ;
    rdfs:label "zoningPriceFactor" ;
    rdfs:comment "" ;
-   schema:rangeIncludes <http://www.w3.org/2001/XMLSchema#integer> ;
+   schema:rangeIncludes xsd:integer ;
    schema:domainIncludes otd:Zone .
