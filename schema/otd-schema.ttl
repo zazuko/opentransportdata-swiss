@@ -39,6 +39,7 @@ otd:DvTarifwertpreisauspraegung a rdfs:Class ;
    rdfs:comment ""@de .
 
 otd:DvVorberechnetePreistabelle a rdfs:Class ;
+   rdfs:subClassOf otd:DvPreistabelle ;
    rdfs:label "DvVorberechnetePreistabelle" ;
    rdfs:comment ""@de .
 
