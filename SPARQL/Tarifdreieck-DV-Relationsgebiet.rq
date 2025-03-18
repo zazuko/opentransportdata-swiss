@@ -5,10 +5,10 @@ PREFIX schema: <http://schema.org/>
 SELECT ?stop1 ?stop2 ?stop1Name ?stop2Name ?tarifwert WHERE {
 
     # Relationsgebiet "Heiden - Rorschach Hafen"
-    ?dvRelation otd:relationsgebiet <https://lod.opentransportdata.swiss/dv-relationsgebiet/ids__6195732000001> .
-    ?dvRelation gtfs:stop ?stop1 .
-    ?dvRelation gtfs:stop ?stop2 .
-    ?dvRelation otd:tarifwert ?tarifwert .
+    ?relation otd:relationsgebiet <https://lod.opentransportdata.swiss/relationsgebiet/ids-6195732000001> .
+    ?relation gtfs:stop ?stop1 .
+    ?relation gtfs:stop ?stop2 .
+    ?relation otd:tarifwert ?tarifwert .
     FILTER (?stop1 != ?stop2)
 
     ?stop1 schema:name ?stop1Name .

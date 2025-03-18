@@ -78,12 +78,12 @@ classDiagram
 
     ZoningPriceCharacteristic -- "*" CustomerSegment
     
-    Relation "*" o-- "2" Station : stop
-    Relation "*" -- "*" Zone
-    Relation "*" -- "*" Anwendungsbereich
-    Relation -- "*" PayLevel
-    Relation "*" -- "*" LocalNetwork
-    Relation "*" -- "*" Zoningplan
+    TransportEdge "*" o-- "2" Station : stop
+    TransportEdge "*" -- "*" Zone
+    TransportEdge "*" -- "*" Anwendungsbereich
+    TransportEdge -- "*" PayLevel
+    TransportEdge "*" -- "*" LocalNetwork
+    TransportEdge "*" -- "*" Zoningplan
 
     Station -- Organization : provider
 
@@ -102,18 +102,18 @@ classDiagram
 ---
 classDiagram
     direction LR
-    DvRelationsgebiet "*" -- "1" Organization : provider
-    DvRelationsgebiet "*" -- "1" DvPreistabelle    
+    Relationsgebiet "*" -- "1" Organization : provider
+    Relationsgebiet "*" -- "1" Preistabelle    
 
-    DvRelation "*" o-- "2" Station : stop
-    DvRelation "*" -- "1" DvRelationsgebiet
+    Relation "*" o-- "2" Station : stop
+    Relation "*" -- "1" Relationsgebiet
 
     Station -- Organization : provider
     
-    DvVorberechnetePreistabelle --|> DvPreistabelle
-    DvVorberechnetePreistabelle  *-- "*" DvTarifwertpreisauspraegung
+    VorberechnetePreistabelle --|> Preistabelle
+    VorberechnetePreistabelle  *-- "*" Tarifwertpreisauspraegung
 
-    DvTarifwertpreisauspraegung "*" -- "*" CustomerSegment
+    Tarifwertpreisauspraegung "*" -- "*" CustomerSegment
 
     style Station fill:lightgray
     style Organization fill:lightgray
@@ -133,6 +133,7 @@ WHERE {
 } LIMIT 10
 
 ```
+Volltextsuche mit boolschem "Logical AND" Operator `&&`:
 
 ```sparql
 PREFIX gtfs: <http://vocab.gtfs.org/terms#>
@@ -140,11 +141,10 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT DISTINCT ?s ?l
 WHERE {
-  ?s a <https://lod.opentransportdata.swiss/vocab/DvPreistabelle> .
-  ?s rdfs:label 'LEX Preistabelle Alpbus Abo T74'.
+  ?s a <https://lod.opentransportdata.swiss/vocab/Preistabelle> .
   
-#   ?s ?p ?l.
-#   (?l ?score) <tag:stardog:api:property:textMatch> 'LEX Preistabelle Alpbus Abo T74'.
+  ?s ?p ?l.
+  (?l ?score) <tag:stardog:api:property:textMatch> 'Alpbus && T74'.
 } LIMIT 10
 
 ```
@@ -160,7 +160,7 @@ DESCRIBE
 `DESCRIBE` antwortet mit einem Graph. Diesen können wir mit [Sketch](https://sketch.zazuko.com/) visualisieren, mit copy/paste der Statements ins Formularfeld "RDF Editor".
 ## Alle Haltestellen mit Kurzstrecken
 
-Verwendet man für die Abrage das Web-UI, dann wird das Resultat des Queries [auf der Karte visualisiert](https://s.zazuko.com/d2aprg) `Geo`
+Verwendet man für die Abrage das Web-UI, dann wird das Resultat des Queries [auf der Karte visualisiert](https://s.zazuko.com/3hc8Zct) `Geo`
 
 ```sparql
 PREFIX sc: <http://purl.org/science/owl/sciencecommons/>
@@ -172,7 +172,7 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 
 SELECT distinct ?Station ?Name ?Coord ?departureID 
 WHERE {
-        ?Kante a otd:Relation;
+        ?Kante a otd:TransportEdge;
               otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-libero>;
               gtfs:stop ?Station .
    
@@ -213,6 +213,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
 PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
 
 #SELECT DISTINCT ?VerbundBezeichnung ?ZonenplanBezeichnung ?ZonenCode ?VerkehrsmittelBezeichnung ?Didok ?HaltestelleBezeichnung
 SELECT ?VerbundBezeichnung ?ZonenplanBezeichnung ?ZonenCode ?ZonenEignerCode ?ZonenEignerKuerzel ?VerkehrsmittelBezeichnung ?stop1id ?stop1Name ?stop2id ?stop2Name
@@ -233,7 +234,7 @@ WHERE {
                schema:alternateName ?ZonenEignerKuerzel;
                schema:identifier ?ZonenEignerCode.
   
-  ?Relation a otd:Relation;
+  ?TransportEdge a otd:TransportEdge;
     otd:zone ?Zone;
     otd:meanOfTransport ?VerkehrsmittelBezeichnung;
     gtfs:stop ?stop1 ;
@@ -264,7 +265,7 @@ SELECT DISTINCT ?verbund_name ?didok ?haltestelle_bezeichnung
 FROM <https://lindas.admin.ch/sbb/nova>
 WHERE {
   	# Ausgabe zu Zonenplan
-  	?Kante a otd:Relation;
+  	?Kante a otd:TransportEdge;
   		otd:zoningPlan ?Zonenplan;
   		gtfs:stop ?haltestelle.
   
@@ -283,7 +284,7 @@ LIMIT 1000
 ```
 ## Haltestellen zum Zonenplan Onde Verte Billet
 
-Verwendet man für die Abrage das Web-UI, dann wird das Resultat des Queries [auf der Karte visualisiert](https://s.zazuko.com/B8Bw7f) `Geo`
+Verwendet man für die Abrage das Web-UI, dann wird das Resultat des Queries [auf der Karte visualisiert](https://s.zazuko.com/2uByEE1) `Geo`
 
 ```sparql
 PREFIX gtfs: <http://vocab.gtfs.org/terms#>
@@ -298,7 +299,7 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 SELECT DISTINCT ?geometrie
 WHERE {
     # Ausgabe zu Zonenplan
-    ?Kante a otd:Relation;
+    ?Kante a otd:TransportEdge;
         otd:zoningPlan ?Zonenplan;
         gtfs:stop ?haltestelle.
   
@@ -325,7 +326,7 @@ SELECT *
 FROM <https://lindas.admin.ch/sbb/nova>
 WHERE {
   	# Ausgabe zu Zonenplan
-  	?Kante a otd:Relation;
+  	?Kante a otd:TransportEdge;
   		otd:zoningPlan ?Zonenplan;
   		gtfs:stop ?haltestelle.
   
@@ -344,7 +345,7 @@ PREFIX schema: <http://schema.org/>
 
 SELECT ?departure ?departureCoord ?departureID ?arrival ?arrivalCoord ?arrivalID
 WHERE {
-        ?Kante a otd:Relation;
+        ?Kante a otd:TransportEdge;
               otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-libero>;
               gtfs:stop ?departurePoint ;
               gtfs:stop ?arrivalPoint .
@@ -364,7 +365,7 @@ limit 100
 ```
 ## Längste Kurzstrecken
 
-Hinweis: Query funktioniert nicht mehr, da die Angabe zu `otd:routeType` auf der Relation fehlt.
+Hinweis: Query funktioniert nicht mehr, da die Angabe zu `otd:routeType` auf der TransportEdge fehlt.
 
 ```sparql
 PREFIX sc: <http://purl.org/science/owl/sciencecommons/>
@@ -378,9 +379,9 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 prefix geo: <http://www.opengis.net/ont/geosparql#>
 prefix geof: <http://www.opengis.net/def/function/geosparql/>
 prefix unit: <http://qudt.org/vocab/unit#>
-SELECT ?Relation ?Zonenplan ?stNam1 ?stNam2 ?distance
+SELECT ?TransportEdge ?Zonenplan ?stNam1 ?stNam2 ?distance
 WHERE {
-  ?Relation a otd:Relation;
+  ?TransportEdge a otd:TransportEdge;
        otd:zoningPlan ?Zonenplan;
        otd:routeType ?RouteType;
     gtfs:stop ?stop1 ;
@@ -448,7 +449,7 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 SELECT * WHERE {
   
   { SELECT ?startingPoint (COUNT(?Kante) AS ?kurzstreckeDeparture) WHERE {
-        ?Kante a otd:Relation;
+        ?Kante a otd:TransportEdge;
           otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-libero>;
           schema:departureStation ?startingPoint ;
           schema:arrivalStation ?arrivalStation .
@@ -457,7 +458,7 @@ SELECT * WHERE {
 #  ?arrivalStation rdfs:label ?arrivalStationLabel .
   
   { SELECT (COUNT(?kante2) AS ?kurzstrecke2Departure) WHERE {
-  		?kante2 a otd:Relation;
+  		?kante2 a otd:TransportEdge;
           otd:zoningPlan <https://lod.opentransportdata.swiss/zoningPlan/libero/libero-billett-libero>;
           schema:departureStation ?arrivalStation;
           schema:arrivalStation ?startingPoint .
@@ -488,7 +489,7 @@ SELECT DISTINCT ?geometrie
 
 WHERE {
     # Ausgabe zu Zonenplan
-    ?Kante a otd:Relation;
+    ?Kante a otd:TransportEdge;
         otd:zoningPlan ?Zonenplan;
         gtfs:stop ?haltestelle.
   
@@ -541,7 +542,7 @@ SELECT DISTINCT ?geometrie ?geometrieLabel
 #FROM <https://lindas.admin.ch/sbb/nova>
 WHERE {
       # Ausgabe zu Zonenplan
-      ?Kante a otd:Relation;
+      ?Kante a otd:TransportEdge;
           otd:zoningPlan ?Zonenplan;
           otd:zone <https://lod.opentransportdata.swiss/zone/libero/libero-abo-libero/300> ;
           gtfs:stop ?haltestelle .
@@ -573,14 +574,14 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 SELECT DISTINCT ?haltestelle ?geometrie  ?geometrieLabel WHERE {
   
   
-        ?Kante a otd:Relation;
+        ?Kante a otd:TransportEdge;
           otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-abo-libero> ;
 #          otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-libero> ;
             
           gtfs:stop ?haltestelle .
   
   MINUS {
-          ?Kante a otd:Relation;
+          ?Kante a otd:TransportEdge;
 #          otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero/libero-billett-libero> ;
           otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-uberzonenplan-libero-tageskarte> ;
 
@@ -610,7 +611,7 @@ prefix vcard: <http://www.w3.org/2006/vcard/ns#>
 SELECT * 
 FROM <https://lindas.admin.ch/sbb/nova>
 WHERE {
-  ?Kante a otd:Relation;
+  ?Kante a otd:TransportEdge;
                otd:zoningPlan ?zonenplan. 
    
 } 
@@ -627,10 +628,10 @@ PREFIX schema: <http://schema.org/>
 SELECT ?stop1 ?stop2 ?stop1Name ?stop2Name ?tarifwert WHERE {
 
     # Relationsgebiet "Heiden - Rorschach Hafen"
-    ?dvRelation otd:relationsgebiet <https://lod.opentransportdata.swiss/dv-relationsgebiet/ids__6195732000001> .
-    ?dvRelation gtfs:stop ?stop1 .
-    ?dvRelation gtfs:stop ?stop2 .
-    ?dvRelation otd:tarifwert ?tarifwert .
+    ?relation otd:relationsgebiet <https://lod.opentransportdata.swiss/relationsgebiet/ids-6195732000001> .
+    ?vk gtfs:stop ?stop1 .
+    ?s gtfs:stop ?stop2 .
+    ?s otd:tarifwert ?tarifwert .
     FILTER (?stop1 != ?stop2)
 
     ?stop1 schema:name ?stop1Name .
@@ -673,20 +674,20 @@ PREFIX schema: <http://schema.org/>
 
 SELECT ?gebietLabel ?stop1 ?stop2 ?stop1Name ?stop2Name  ?tarifwert1 ?tarifwert2  WHERE {
 
-    ?dvRelation1 otd:relationsgebiet/rdfs:label ?gebietLabel .
-    ?dvRelation1 otd:relationsgebiet/otd:preistabelle/otd:anstossTyp "PREIS" .
-    ?dvRelation1 gtfs:stop ?stop1 .
-    ?dvRelation1 gtfs:stop ?stop2 .
-    ?dvRelation1 otd:tarifwert ?tarifwert1 .
+    ?relation1 otd:relationsgebiet/rdfs:label ?gebietLabel .
+    ?relation1 otd:relationsgebiet/otd:preistabelle/otd:anstossTyp "PREIS" .
+    ?relation1 gtfs:stop ?stop1 .
+    ?relation1 gtfs:stop ?stop2 .
+    ?relation1 otd:tarifwert ?tarifwert1 .
 
-    ?dvRelation2 otd:relationsgebiet/rdfs:label ?gebietLabel .
-    ?dvRelation2 otd:relationsgebiet/otd:preistabelle/otd:anstossTyp "KILOMETER" .
-    ?dvRelation2 gtfs:stop ?stop1 .
-    ?dvRelation2 gtfs:stop ?stop2 .
-    ?dvRelation2 otd:tarifwert ?tarifwert2 .
+    ?relation2 otd:relationsgebiet/rdfs:label ?gebietLabel .
+    ?relation2 otd:relationsgebiet/otd:preistabelle/otd:anstossTyp "KILOMETER" .
+    ?relation2 gtfs:stop ?stop1 .
+    ?relation2 gtfs:stop ?stop2 .
+    ?relation2 otd:tarifwert ?tarifwert2 .
     
     FILTER (?stop1 != ?stop2)
-    FILTER (?dvRelation1 != ?dvRelation2)
+    FILTER (?relation1 != ?relation2)
     FILTER (?tarifwert1 != ?tarifwert2)
 
     ?stop1 schema:name ?stop1Name .
@@ -701,8 +702,7 @@ VALUES ?gebietLabel {
 ## Alle relationen, die es sowohl im DV wie im Zonenmodell gibt
 
 Interpretation der Fragestellung:
-- Relationen haben identische Haltestellen
-- Relationen unterscheiden sich im Typ (DV, Zoning)
+- Relation und Verkehrskante haben identische Haltestellen
 
 ```sparql
 PREFIX gtfs: <http://vocab.gtfs.org/terms#>
@@ -710,38 +710,38 @@ PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX schema: <http://schema.org/>
 
-SELECT distinct ?stop1 ?stop2 ?stop1Name ?stop2Name ?relation ?zusatz WHERE {
+SELECT distinct ?stop1 ?stop2 ?stop1Name ?stop2Name ?s ?zusatz WHERE {
     {
-        ?relation a otd:DvRelation .
-        ?relation gtfs:stop ?stop1 .
-        ?relation gtfs:stop ?stop2 .
-        ?relation otd:relationsgebiet/otd:preistabelle/rdfs:label ?zusatz .
+        ?s a otd:Relation .
+        ?s gtfs:stop ?stop1 .
+        ?s gtfs:stop ?stop2 .
+        ?s otd:relationsgebiet/otd:preistabelle/rdfs:label ?zusatz .
 
-        ?zoneRelation a otd:Relation.
-        ?zoneRelation gtfs:stop ?stop1 .
-        ?zoneRelation gtfs:stop ?stop2 .
+        ?kante a otd:TransportEdge .
+        ?kante gtfs:stop ?stop1 .
+        ?kante gtfs:stop ?stop2 .
         
         FILTER (?stop1 != ?stop2)
-        FILTER (?relation != ?zoneRelation)
+        FILTER (?s != ?kante)
     }
     UNION
     {
-        ?relation a otd:Relation .
+        ?s a otd:TransportEdge .
+        ?s gtfs:stop ?stop1 .
+        ?s gtfs:stop ?stop2 .
+
+        ?relation a otd:Relation.
         ?relation gtfs:stop ?stop1 .
         ?relation gtfs:stop ?stop2 .
-
-        ?dvRelation a otd:DvRelation.
-        ?dvRelation gtfs:stop ?stop1 .
-        ?dvRelation gtfs:stop ?stop2 .
         
         FILTER (?stop1 != ?stop2)
-        FILTER (?relation != ?dvRelation)
+        FILTER (?s != ?relation)
     }
 
     ?stop1 schema:name ?stop1Name .
     ?stop2 schema:name ?stop2Name .
 }
-ORDER BY ?relation
+ORDER BY ?s
 LIMIT 100
 
 VALUES (?stop1 ?stop2) {
@@ -761,11 +761,11 @@ prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 # select * where {
 select ?gebietLabel ?zusatz where {
 
-    ?relationsgebiet a otd:DvRelationsgebiet ;
+    ?relationsgebiet a otd:Relationsgebiet ;
         rdfs:label ?gebietLabel ;
         otd:preistabelle ?preistabelle .
     
-    ?preistabelle a otd:DvVorberechnetePreistabelle ;
+    ?preistabelle a otd:VorberechnetePreistabelle ;
         rdfs:label ?zusatz .
 
 }
@@ -788,11 +788,11 @@ PREFIX schema: <http://schema.org/>
 
 SELECT ?tarifWertVon ?tarifWertBis ?customerSegment ?class ?fahrart ?geltungsdauerUnit ?geltungsdauerValue ?price ?priceCurrency
 WHERE {
-    BIND(<https://lod.opentransportdata.swiss/dv-preistabelle/ids__91048544002> AS ?preistabelle)   # ein CS, eine klasse, ohne fahrart, mit geltungsdauer
-    # BIND(<https://lod.opentransportdata.swiss/dv-preistabelle/ids__192091332001> AS ?preistabelle)  # mehrere CS, eine klasse, ohne fahrart, mit geltungsdauer
-    # BIND(<https://lod.opentransportdata.swiss/dv-preistabelle/ids__14056194> AS ?preistabelle)      # mehrere CS, mehrere klassen, ohne fahrart, mit geltungsdauer
+    BIND(<https://lod.opentransportdata.swiss/preistabelle/ids-91048544002> AS ?preistabelle)   # ein CS, eine klasse, ohne fahrart, mit geltungsdauer
+    # BIND(<https://lod.opentransportdata.swiss/preistabelle/ids-192091332001> AS ?preistabelle)  # mehrere CS, eine klasse, ohne fahrart, mit geltungsdauer
+    # BIND(<https://lod.opentransportdata.swiss/preistabelle/ids-14056194> AS ?preistabelle)      # mehrere CS, mehrere klassen, ohne fahrart, mit geltungsdauer
 
-    # BIND(<https://lod.opentransportdata.swiss/dv-preistabelle/ids__14056192> AS ?preistabelle)  # mit fahrart, ohne geltungsdauer   
+    # BIND(<https://lod.opentransportdata.swiss/preistabelle/ids-14056192> AS ?preistabelle)  # mit fahrart, ohne geltungsdauer   
 
     ?preistabelle otd:preisauspraegung ?preisauspraegung .
 
@@ -822,24 +822,25 @@ WHERE {
 ```
 ## Anwendungsbereiche
 
-Liste aller Anwendungsbereiche, die eine bestimmte Relation abdecken:
+Liste aller Anwendungsbereiche, die eine bestimmte Transportkante abdecken:
 
 ```sparql
 PREFIX gtfs: <http://vocab.gtfs.org/terms#>
 PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
 PREFIX schema: <http://schema.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?awbLabel ?streckenAnwendbarkeitsbedingung ?tuAnwendbarkeitsbedingung WHERE {
     ?awb a otd:Anwendungsbereich;
         rdfs:label ?awbLabel.
     
-    <https://lod.opentransportdata.swiss/relation/8503006/8503400/sbb/bahn/regular> otd:anwendungsbereich ?awb .
+    <https://lod.opentransportdata.swiss/transportedge/8503006/8503400/sbb/bahn/regular> otd:anwendungsbereich ?awb .
 
     optional { ?awb otd:streckenAnwendbarkeitsbedingung ?streckenAnwendbarkeitsbedingung; }
     optional { ?awb otd:tuAnwendbarkeitsbedingung ?tuAnwendbarkeitsbedingung; }
 }
 ```
-Anwendungsbereiche und mit Anzahl abgedeckter Relationen:
+Anwendungsbereiche mit Anzahl abgedeckter Transportkanten:
 
 ```sparql
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -847,18 +848,18 @@ PREFIX gtfs: <http://vocab.gtfs.org/terms#>
 PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
 PREFIX schema: <http://schema.org/>
 
-SELECT  ?label (count( distinct ?relation) AS ?zoneRelationCount)  WHERE {
+SELECT  ?label (count( distinct ?transportedge) AS ?transportedgeCount)  WHERE {
     {
         ?awb a otd:Anwendungsbereich;
             rdfs:label ?label.
-        ?relation a otd:Relation ;
+        ?transportedge a otd:TransportEdge ;
             otd:anwendungsbereich ?awb .
     }
 }
 group by ?awb ?label
-order by desc( ?zoneRelationCount )
+order by desc( ?transportedgeCount )
 ```
-Anzahl Relationen in der Schnittmenge von GA und Halbtax:
+Anzahl Verkehrskanten in der Schnittmenge von GA und Halbtax:
 
 ```sparql
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
@@ -866,18 +867,16 @@ PREFIX gtfs: <http://vocab.gtfs.org/terms#>
 PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
 PREFIX schema: <http://schema.org/>
 
-SELECT  (count( distinct ?relation) AS ?relationCount)  WHERE {
-    BIND(<https://lod.opentransportdata.swiss/anwendungsbereich/t654-generalabonnement> AS ?awb1)      # T654 Generalabonnement
-    BIND(<https://lod.opentransportdata.swiss/anwendungsbereich/t654-halbtax-abonnement> AS ?awb2)     # T654 Halbtax-Abonnement
+SELECT (count( distinct ?transportedge) AS ?transportedgeCount)  WHERE {
     
-    ?relation a otd:Relation ;
-        otd:anwendungsbereich ?awb1 ;
-        otd:anwendungsbereich ?awb2 . 
+    ?transportedge a otd:TransportEdge ;
+        otd:anwendungsbereich <https://lod.opentransportdata.swiss/anwendungsbereich/t654-generalabonnement> ;
+        otd:anwendungsbereich <https://lod.opentransportdata.swiss/anwendungsbereich/t654-halbtax-abonnement> . 
 }
 ```
-Welche Relationen sind beim GA dabei aber nicht beim Halbtax?  (in rot)
+Welche Verkehrskanten sind beim GA dabei aber nicht beim Halbtax?  (in rot)
 
-Welche Relationen sind beim Halbtax dabei aber nicht beim GA?  (in grün)
+Welche Verkehrskanten sind beim Halbtax dabei aber nicht beim GA?  (in grün)
 
 Darstellung auf Karte mit `Geo`.
 
@@ -893,43 +892,43 @@ PREFIX geo: <http://www.opengis.net/ont/geosparql#>
 SELECT *
 WHERE {
   {
-    SELECT ?relation ?relationWKTColor WHERE {
+    SELECT ?vk ?vkWKTColor WHERE {
       {
         BIND(<https://lod.opentransportdata.swiss/anwendungsbereich/t654-generalabonnement> AS ?awb1)     # T654 Generalabonnement
         BIND(<https://lod.opentransportdata.swiss/anwendungsbereich/t654-halbtax-abonnement> AS ?awb2)    # T654 Halbtax-Abonnement
-        BIND("red" AS ?relationWKTColor)
+        BIND("red" AS ?vkWKTColor)
 
-        ?relation a otd:Relation ;
+        ?vk a otd:TransportEdge ;
           otd:anwendungsbereich ?awb1 .
 
         FILTER NOT EXISTS {
-          ?relation otd:anwendungsbereich ?awb2 .
+          ?vk otd:anwendungsbereich ?awb2 .
         }
       }
     }
   }
   UNION
   {
-    SELECT ?relation ?relationWKTColor WHERE {
+    SELECT ?vk ?vkWKTColor WHERE {
       {
         BIND(<https://lod.opentransportdata.swiss/anwendungsbereich/t654-halbtax-abonnement> AS ?awb1)     # T654 Halbtax-Abonnement
         BIND(<https://lod.opentransportdata.swiss/anwendungsbereich/t654-generalabonnement> AS ?awb2)      # T654 Generalabonnement
-        BIND("green" AS ?relationWKTColor)
+        BIND("green" AS ?vkWKTColor)
 
-        ?relation a otd:Relation ;
+        ?vk a otd:TransportEdge ;
           otd:anwendungsbereich ?awb1 .
 
         FILTER NOT EXISTS {
-          ?relation otd:anwendungsbereich ?awb2 .
+          ?vk otd:anwendungsbereich ?awb2 .
         }
       }
     }
   }
 
-  ?relation a otd:Relation ;
-            gtfs:stop ?stop1 ;
-            gtfs:stop ?stop2 ;
-            otd:meanOfTransport ?meanOfTransport .
+  ?vk a otd:TransportEdge ;
+        gtfs:stop ?stop1 ;
+        gtfs:stop ?stop2 ;
+        otd:meanOfTransport ?meanOfTransport .
 
   ?stop1 schema:identifier ?stop1Id .
   ?stop2 schema:identifier ?stop2Id .
@@ -940,7 +939,7 @@ WHERE {
   ?stop2 wgs:lat ?stop2Lat ;
          wgs:long ?stop2Long .
 
-  BIND(STRDT(CONCAT("LINESTRING(", STR(?stop1Long), " ", STR(?stop1Lat), ", " , STR(?stop2Long), " ", STR(?stop2Lat), ")"), geo:wktLiteral) AS ?relationWKT)
-  BIND(CONCAT(COALESCE(?meanOfTransport, "-"), " ", STR(?stop1Id), " -> ", STR(?stop2Id), " ", STR(?relation)) AS ?relationWKTLabel ).
+  BIND(STRDT(CONCAT("LINESTRING(", STR(?stop1Long), " ", STR(?stop1Lat), ", " , STR(?stop2Long), " ", STR(?stop2Lat), ")"), geo:wktLiteral) AS ?vkWKT)
+  BIND(CONCAT(COALESCE(?meanOfTransport, "-"), " ", STR(?stop1Id), " -> ", STR(?stop2Id), " ", STR(?vk)) AS ?vkWKTLabel ).
 }
 ```

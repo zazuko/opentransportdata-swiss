@@ -55,12 +55,12 @@ classDiagram
 
     ZoningPriceCharacteristic -- "*" CustomerSegment
     
-    Relation "*" o-- "2" Station : stop
-    Relation "*" -- "*" Zone
-    Relation "*" -- "*" Anwendungsbereich
-    Relation -- "*" PayLevel
-    Relation "*" -- "*" LocalNetwork
-    Relation "*" -- "*" Zoningplan
+    TransportEdge "*" o-- "2" Station : stop
+    TransportEdge "*" -- "*" Zone
+    TransportEdge "*" -- "*" Anwendungsbereich
+    TransportEdge -- "*" PayLevel
+    TransportEdge "*" -- "*" LocalNetwork
+    TransportEdge "*" -- "*" Zoningplan
 
     Station -- Organization : provider
 
@@ -79,18 +79,18 @@ classDiagram
 ---
 classDiagram
     direction LR
-    DvRelationsgebiet "*" -- "1" Organization : provider
-    DvRelationsgebiet "*" -- "1" DvPreistabelle    
+    Relationsgebiet "*" -- "1" Organization : provider
+    Relationsgebiet "*" -- "1" Preistabelle    
 
-    DvRelation "*" o-- "2" Station : stop
-    DvRelation "*" -- "1" DvRelationsgebiet
+    Relation "*" o-- "2" Station : stop
+    Relation "*" -- "1" Relationsgebiet
 
     Station -- Organization : provider
     
-    DvVorberechnetePreistabelle --|> DvPreistabelle
-    DvVorberechnetePreistabelle  *-- "*" DvTarifwertpreisauspraegung
+    VorberechnetePreistabelle --|> Preistabelle
+    VorberechnetePreistabelle  *-- "*" Tarifwertpreisauspraegung
 
-    DvTarifwertpreisauspraegung "*" -- "*" CustomerSegment
+    Tarifwertpreisauspraegung "*" -- "*" CustomerSegment
 
     style Station fill:lightgray
     style Organization fill:lightgray

@@ -11,7 +11,7 @@ SELECT DISTINCT ?verbund_name ?didok ?haltestelle_bezeichnung
 FROM <https://lindas.admin.ch/sbb/nova>
 WHERE {
   	# Ausgabe zu Zonenplan
-  	?Kante a otd:Relation;
+  	?Kante a otd:TransportEdge;
   		otd:zoningPlan ?Zonenplan;
   		gtfs:stop ?haltestelle.
   

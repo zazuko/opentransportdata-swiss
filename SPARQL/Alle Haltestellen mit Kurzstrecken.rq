@@ -7,7 +7,7 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 
 SELECT distinct ?Station ?Name ?Coord ?departureID 
 WHERE {
-        ?Kante a otd:Relation;
+        ?Kante a otd:TransportEdge;
               otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-libero>;
               gtfs:stop ?Station .
    

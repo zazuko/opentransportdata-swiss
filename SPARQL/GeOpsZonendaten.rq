@@ -8,6 +8,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
 PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
 
 #SELECT DISTINCT ?VerbundBezeichnung ?ZonenplanBezeichnung ?ZonenCode ?VerkehrsmittelBezeichnung ?Didok ?HaltestelleBezeichnung
 SELECT ?VerbundBezeichnung ?ZonenplanBezeichnung ?ZonenCode ?ZonenEignerCode ?ZonenEignerKuerzel ?VerkehrsmittelBezeichnung ?stop1id ?stop1Name ?stop2id ?stop2Name
@@ -28,7 +29,7 @@ WHERE {
                schema:alternateName ?ZonenEignerKuerzel;
                schema:identifier ?ZonenEignerCode.
   
-  ?Relation a otd:Relation;
+  ?TransportEdge a otd:TransportEdge;
     otd:zone ?Zone;
     otd:meanOfTransport ?VerkehrsmittelBezeichnung;
     gtfs:stop ?stop1 ;

@@ -12,7 +12,7 @@ SELECT DISTINCT ?geometrie
 
 WHERE {
     # Ausgabe zu Zonenplan
-    ?Kante a otd:Relation;
+    ?Kante a otd:TransportEdge;
         otd:zoningPlan ?Zonenplan;
         gtfs:stop ?haltestelle.
   

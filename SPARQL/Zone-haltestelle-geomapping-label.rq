@@ -15,7 +15,7 @@ SELECT DISTINCT ?geometrie ?geometrieLabel
 #FROM <https://lindas.admin.ch/sbb/nova>
 WHERE {
       # Ausgabe zu Zonenplan
-      ?Kante a otd:Relation;
+      ?Kante a otd:TransportEdge;
           otd:zoningPlan ?Zonenplan;
           otd:zone <https://lod.opentransportdata.swiss/zone/libero/libero-abo-libero/300> ;
           gtfs:stop ?haltestelle .

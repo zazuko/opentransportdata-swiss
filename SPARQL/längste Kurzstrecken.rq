@@ -9,9 +9,9 @@ PREFIX dcterms: <http://purl.org/dc/terms/>
 prefix geo: <http://www.opengis.net/ont/geosparql#>
 prefix geof: <http://www.opengis.net/def/function/geosparql/>
 prefix unit: <http://qudt.org/vocab/unit#>
-SELECT ?Relation ?Zonenplan ?stNam1 ?stNam2 ?distance
+SELECT ?TransportEdge ?Zonenplan ?stNam1 ?stNam2 ?distance
 WHERE {
-  ?Relation a otd:Relation;
+  ?TransportEdge a otd:TransportEdge;
        otd:zoningPlan ?Zonenplan;
        otd:routeType ?RouteType;
     gtfs:stop ?stop1 ;

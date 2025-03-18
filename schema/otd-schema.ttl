@@ -22,25 +22,31 @@ otd:CustomerSegment a rdfs:Class ;
    rdfs:label "CustomerSegment" ;
    rdfs:comment "Kundensegment"@de .
 
-otd:DvPreistabelle a rdfs:Class ;
-   rdfs:label "DvPreistabelle" ;
+# was otd:DvPreistabelle a rdfs:Class ;
+otd:Preistabelle a rdfs:Class ;
+   rdfs:label "Preistabelle" ;
    rdfs:comment "Preistabelle im direkten Verkehr"@de .
 
-otd:DvRelation a rdfs:Class ;
-   rdfs:label "DvRelation" ;
+# was otd:DvRelation a rdfs:Class ;
+otd:Relation a rdfs:Class ;
+   rdfs:label "Relation" ;
    rdfs:comment "Relation im direkten Verkehr. Die Relation ist ein Verbindung zwischen zwei Haltestellen"@de .
 
-otd:DvRelationsgebiet a rdfs:Class ;
-   rdfs:label "DvRelationsgebiet" ;
+# was otd:DvRelationsgebiet a rdfs:Class ;
+otd:Relationsgebiet a rdfs:Class ;
+   rdfs:label "Relationsgebiet" ;
    rdfs:comment "Zusammenfassung von Relationen im direkten Verkehr"@de .
 
-otd:DvTarifwertpreisauspraegung a rdfs:Class ;
-   rdfs:label "DvTarifwertpreisauspraegung" ;
+# was otd:DvTarifwertpreisauspraegung a rdfs:Class ;
+otd:Tarifwertpreisauspraegung a rdfs:Class ;
+   rdfs:subClassOf schema:UnitPriceSpecification ;
+   rdfs:label "Tarifwertpreisauspraegung" ;
    rdfs:comment ""@de .
 
-otd:DvVorberechnetePreistabelle a rdfs:Class ;
-   rdfs:subClassOf otd:DvPreistabelle ;
-   rdfs:label "DvVorberechnetePreistabelle" ;
+# was otd:DvVorberechnetePreistabelle a rdfs:Class ;
+otd:VorberechnetePreistabelle a rdfs:Class ;
+   rdfs:subClassOf otd:Preistabelle ;
+   rdfs:label "VorberechnetePreistabelle" ;
    rdfs:comment ""@de .
 
 otd:LocalNetwork a rdfs:Class ;
@@ -51,8 +57,9 @@ otd:PayLevel a rdfs:Class ;
    rdfs:label "PayLevel" ;
    rdfs:comment "" .
 
-otd:Relation a rdfs:Class ;
-   rdfs:label "Relation" ;
+# was otd:Relation a rdfs:Class ;
+otd:TransportEdge a rdfs:Class ;
+   rdfs:label "TransportEdge" ;
    rdfs:comment "Verbindung zwischen zwei Haltestellen"@de .
 
 otd:Tarif a rdfs:Class ;
@@ -86,13 +93,13 @@ otd:anstossTyp a rdf:Property ;
    rdfs:label "anstossTyp" ;
    rdfs:comment "" ;
    schema:rangeIncludes xsd:string ;
-   schema:domainIncludes otd:DvPreistabelle .
+   schema:domainIncludes otd:Preistabelle .
 
 otd:anwendungsbereich a rdf:Property ;
    rdfs:label "anwendungsbereich" ;
    rdfs:comment ""@de ;
    schema:rangeIncludes otd:Anwendungsbereich ;
-   schema:domainIncludes otd:Relation .
+   schema:domainIncludes otd:TransportEdge .
 
 otd:class a rdf:Property ;
    rdfs:label "class" ;
@@ -110,13 +117,13 @@ otd:effektiveKilometer a rdf:Property ;
    rdfs:label "effektiveKilometer" ;
    rdfs:comment "effektive Distanz einer Relation zwischen den beiden Haltestellen"@de ;
    schema:rangeIncludes xsd:integer ;
-   schema:domainIncludes otd:DvRelation .
+   schema:domainIncludes otd:Relation .
 
 otd:fahrart a rdf:Property ;
    rdfs:label "fahrart" ;
    rdfs:comment "Fahrart (EINFACH, RETOUR)"@de ;
    schema:rangeIncludes xsd:string ;
-   schema:domainIncludes otd:DvTarifwertpreisauspraegung .
+   schema:domainIncludes otd:Tarifwertpreisauspraegung .
 
 otd:frequencyCode a rdf:Property ;
    rdfs:label "frequencyCode" ;
@@ -128,7 +135,7 @@ otd:klassenTyp a rdf:Property ;
    rdfs:label "klassenTyp" ;
    rdfs:comment "" ;
    schema:rangeIncludes xsd:string ;
-   schema:domainIncludes otd:DvRelationsgebiet .
+   schema:domainIncludes otd:Relationsgebiet .
 
 otd:levelFrom a rdf:Property ;
    rdfs:label "levelFrom" ;
@@ -146,13 +153,13 @@ otd:linienCode a rdf:Property ;
    rdfs:label "linienCode" ;
    rdfs:comment "" ;
    schema:rangeIncludes xsd:integer ;
-   schema:domainIncludes otd:DvRelationsgebiet .
+   schema:domainIncludes otd:Relationsgebiet .
 
 otd:localNetwork a rdf:Property ;
    rdfs:label "localNetwork" ;
    rdfs:comment "lokales Netzwerk" ;
    schema:rangeIncludes otd:LocalNetwork ;
-   schema:domainIncludes otd:PayLevel , otd:Relation .
+   schema:domainIncludes otd:PayLevel , otd:TransportEdge .
 
 otd:maxAge a rdf:Property ;
    rdfs:label "maxAge" ;
@@ -164,7 +171,7 @@ otd:meanOfTransport a rdf:Property ;
    rdfs:label "meanOfTransport" ;
    rdfs:comment "Transportmittel (Bus, Zug, Tram, ...)"@de ;
    schema:rangeIncludes xsd:string ;
-   schema:domainIncludes otd:Relation .
+   schema:domainIncludes otd:TransportEdge .
 
 otd:minAge a rdf:Property ;
    rdfs:label "minAge" ;
@@ -176,7 +183,7 @@ otd:nummer a rdf:Property ;
    rdfs:label "nummer" ;
    rdfs:comment "" ;
    schema:rangeIncludes xsd:integer ;
-   schema:domainIncludes otd:DvRelationsgebiet .
+   schema:domainIncludes otd:Relationsgebiet .
 
 otd:payLevel a rdf:Property ;
    rdfs:label "payLevel" ;
@@ -184,7 +191,7 @@ otd:payLevel a rdf:Property ;
    schema:rangeIncludes otd:PayLevel ;
    schema:rangeIncludes xsd:string ;
    schema:domainIncludes otd:PayLevel ;
-   schema:domainIncludes otd:Relation , otd:Tarif , otd:Zone .
+   schema:domainIncludes otd:TransportEdge , otd:Tarif , otd:Zone .
 
 otd:payLevelType a rdf:Property ;
    rdfs:label "payLevelType" ;
@@ -207,14 +214,14 @@ otd:periodOfValidityUnit a rdf:Property ;
 otd:preisauspraegung a rdf:Property ;
    rdfs:label "preisauspraegung" ;
    rdfs:comment ""@de ;
-   schema:rangeIncludes otd:DvTarifwertpreisauspraegung ;
-   schema:domainIncludes otd:DvVorberechnetePreistabelle .
+   schema:rangeIncludes otd:Tarifwertpreisauspraegung ;
+   schema:domainIncludes otd:VorberechnetePreistabelle .
 
 otd:preistabelle a rdf:Property ;
    rdfs:label "preistabelle" ;
    rdfs:comment "" ;
-   schema:rangeIncludes otd:DvPreistabelle ;
-   schema:domainIncludes otd:DvRelationsgebiet .
+   schema:rangeIncludes otd:Preistabelle ;
+   schema:domainIncludes otd:Relationsgebiet .
 
 otd:printCustomerCode a rdf:Property ;
    rdfs:label "printCustomerCode" ;
@@ -238,13 +245,13 @@ otd:priority a rdf:Property ;
    rdfs:label "priority" ;
    rdfs:comment "" ;
    schema:rangeIncludes xsd:integer ;
-   schema:domainIncludes otd:DvRelation .
+   schema:domainIncludes otd:Relation .
 
 otd:relationsgebiet a rdf:Property ;
    rdfs:label "relationsgebiet" ;
    rdfs:comment "" ;
-   schema:rangeIncludes otd:DvRelationsgebiet ;
-   schema:domainIncludes otd:DvRelation .
+   schema:rangeIncludes otd:Relationsgebiet ;
+   schema:domainIncludes otd:Relation .
 
 otd:relevantDiscountCancellation a rdf:Property ;
    rdfs:label "relevantDiscountCancellation" ;
@@ -268,7 +275,7 @@ otd:routeType a rdf:Property ;
    rdfs:label "routeType" ;
    rdfs:comment "" ;
    schema:rangeIncludes xsd:string ;
-   schema:domainIncludes otd:PayLevel , otd:Relation .
+   schema:domainIncludes otd:PayLevel , otd:TransportEdge .
 
 otd:screenLabel a rdf:Property ;
    rdfs:label "screenLabel" ;
@@ -298,19 +305,19 @@ otd:tarifwert a rdf:Property ;
    rdfs:label "tarifwert" ;
    rdfs:comment "" ;
    schema:rangeIncludes xsd:integer ;
-   schema:domainIncludes otd:DvRelation .
+   schema:domainIncludes otd:Relation .
 
 otd:tarifWertBis a rdf:Property ;
    rdfs:label "tarifWertBis" ;
    rdfs:comment ""@de ;
    schema:rangeIncludes xsd:integer ;
-   schema:domainIncludes otd:DvTarifwertpreisauspraegung .
+   schema:domainIncludes otd:Tarifwertpreisauspraegung .
 
 otd:tarifWertVon a rdf:Property ;
    rdfs:label "tarifWertVon" ;
    rdfs:comment ""@de ;
    schema:rangeIncludes xsd:integer ;
-   schema:domainIncludes otd:DvTarifwertpreisauspraegung .
+   schema:domainIncludes otd:Tarifwertpreisauspraegung .
 
 otd:travelTimeTolerance a rdf:Property ;
    rdfs:label "travelTimeTolerance" ;
@@ -340,13 +347,13 @@ otd:zone a rdf:Property ;
    rdfs:label "zone" ;
    rdfs:comment "Zone"@de ;
    schema:rangeIncludes otd:Zone ;
-   schema:domainIncludes otd:Relation , otd:ZoningPlan .
+   schema:domainIncludes otd:TransportEdge , otd:ZoningPlan .
 
 otd:zoningPlan a rdf:Property ;
    rdfs:label "zoningPlan" ;
    rdfs:comment "Zonenplan"@de ;
    schema:rangeIncludes otd:ZoningPlan ;
-   schema:domainIncludes otd:LocalNetwork , otd:Relation , otd:Zone .
+   schema:domainIncludes otd:LocalNetwork , otd:TransportEdge , otd:Zone .
 
 otd:zoningPriceFactor a rdf:Property ;
    rdfs:label "zoningPriceFactor" ;
