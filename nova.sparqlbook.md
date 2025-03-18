@@ -629,9 +629,9 @@ SELECT ?stop1 ?stop2 ?stop1Name ?stop2Name ?tarifwert WHERE {
 
     # Relationsgebiet "Heiden - Rorschach Hafen"
     ?relation otd:relationsgebiet <https://lod.opentransportdata.swiss/relationsgebiet/ids-6195732000001> .
-    ?vk gtfs:stop ?stop1 .
-    ?s gtfs:stop ?stop2 .
-    ?s otd:tarifwert ?tarifwert .
+    ?relation gtfs:stop ?stop1 .
+    ?relation gtfs:stop ?stop2 .
+    ?relation otd:tarifwert ?tarifwert .
     FILTER (?stop1 != ?stop2)
 
     ?stop1 schema:name ?stop1Name .
