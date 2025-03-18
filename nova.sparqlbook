@@ -334,7 +334,7 @@
   {
     "kind": 1,
     "language": "markdown",
-    "value": "## Anwendungsbereiche\n\nListe aller Anwendungsbereiche, die eine bestimmte Transportkante abdecken:",
+    "value": "## Anwendungsbereiche\n\nListe aller Anwendungsbereiche, die eine bestimmte Verkehrskante abdecken:",
     "metadata": {}
   },
   {
@@ -346,7 +346,7 @@
   {
     "kind": 1,
     "language": "markdown",
-    "value": "Anwendungsbereiche mit Anzahl abgedeckter Transportkanten:",
+    "value": "Anwendungsbereiche mit der Anzahl abgedeckten Verkehrskanten:",
     "metadata": {}
   },
   {

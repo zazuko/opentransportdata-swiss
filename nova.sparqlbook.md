@@ -822,7 +822,7 @@ WHERE {
 ```
 ## Anwendungsbereiche
 
-Liste aller Anwendungsbereiche, die eine bestimmte Transportkante abdecken:
+Liste aller Anwendungsbereiche, die eine bestimmte Verkehrskante abdecken:
 
 ```sparql
 PREFIX gtfs: <http://vocab.gtfs.org/terms#>
@@ -840,7 +840,7 @@ SELECT ?awbLabel ?streckenAnwendbarkeitsbedingung ?tuAnwendbarkeitsbedingung WHE
     optional { ?awb otd:tuAnwendbarkeitsbedingung ?tuAnwendbarkeitsbedingung; }
 }
 ```
-Anwendungsbereiche mit Anzahl abgedeckter Transportkanten:
+Anwendungsbereiche mit der Anzahl abgedeckten Verkehrskanten:
 
 ```sparql
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
