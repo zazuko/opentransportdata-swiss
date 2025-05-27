@@ -3,6 +3,7 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix otd: <https://lod.opentransportdata.swiss/vocab/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix gtfs: <http://vocab.gtfs.org/terms#> .
 
 # Hinweise:
 # - Bei Umbenennungen von IRIs von Klassen oder Properties bitte zwecks Nachvollziehbarkeit die bestehende erste Zeile des Definitionsblocks kopieren, auskommentieren und stehen lassen
@@ -288,6 +289,20 @@ otd:screenTermText a rdf:Property ;
    rdfs:comment "" ;
    schema:rangeIncludes rdf:langString ;
    schema:domainIncludes otd:PayLevel .
+
+otd:sboid a rdf:Property ;
+   rdfs:label "Swiss Business Organisation ID (SBOID)" ;
+   rdfs:comment "ID der Geschäftsorganisation (SBOID)."@de ;
+   rdfs:seeAlso "https://www.oev-info.ch/de/branchenstandard/technische-standards/strukturelle-standards"^^xsd:anyURI ;
+   schema:rangeIncludes xsd:string ;
+   schema:domainIncludes schema:Organization .
+
+otd:sloid a rdf:Property ;
+   rdfs:label "Swiss Location ID (SLOID)" ;
+   rdfs:comment "Eineindeutiger Schlüssel für Dienststellen gemäss Spezifikation Swiss ID for Public Transport welcher in der Kundeninformation genutzt wird."@de ;
+   rdfs:seeAlso "https://www.oev-info.ch/de/branchenstandard/technische-standards/strukturelle-standards"^^xsd:anyURI ;
+   schema:rangeIncludes xsd:string ;
+   schema:domainIncludes gtfs:Station .
 
 otd:streckenAnwendbarkeitsbedingung a rdf:Property ;
    rdfs:label "streckenAnwendbarkeitsbedingung" ;
