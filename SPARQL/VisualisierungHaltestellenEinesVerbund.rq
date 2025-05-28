@@ -16,7 +16,7 @@ WHERE {
         otd:zoningPlan ?Zonenplan;
         gtfs:stop ?haltestelle.
   
-    FILTER(?Zonenplan IN (<https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-libero>))
+    FILTER(?Zonenplan IN (<https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-billett-libero>))
 
     ?haltestelle <http://www.opengis.net/ont/geosparql#hasGeometry>/<http://www.opengis.net/ont/geosparql#asWKT> ?geometrie
 } 

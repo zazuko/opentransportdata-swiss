@@ -7,7 +7,7 @@ PREFIX schema: <http://schema.org/>
 SELECT ?departure ?departureCoord ?departureID ?arrival ?arrivalCoord ?arrivalID
 WHERE {
         ?Kante a otd:TransportEdge;
-              otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-libero>;
+              otd:zoningPlan <https://lod.opentransportdata.swiss/zoningplan/libero/libero-billett-billett-libero>;
               gtfs:stop ?departurePoint ;
               gtfs:stop ?arrivalPoint .
   

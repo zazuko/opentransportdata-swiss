@@ -6,27 +6,12 @@ PREFIX otd: <https://lod.opentransportdata.swiss/vocab/>
 PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
 PREFIX dcterms: <http://purl.org/dc/terms/>
 
- 
-
-# Select: wählt die Variablen aus, welche angezeigt werden sollen im Ergebnis.
-#SELECT ?Zonenplan ?zonenplan_name ?zone ?zone_name
 SELECT DISTINCT ?geometrie ?geometrieLabel
-#SELECT *
-#FROM <https://lindas.admin.ch/sbb/nova>
 WHERE {
-      # Ausgabe zu Zonenplan
-      ?Kante a otd:TransportEdge;
-          otd:zoningPlan ?Zonenplan;
-          otd:zone <https://lod.opentransportdata.swiss/zone/libero/libero-abo-libero/300> ;
-          gtfs:stop ?haltestelle .
-   #       gtfs:stop <https://lod.opentransportdata.swiss/didok/8593380> . 
-  
-  #FILTER( 
-  
-    #  FILTER(?Zonenplan IN (<https://lod.opentransportdata.swiss/zoningplan/onde-verte/onde-verte-billett>))
-
+    ?Kante a otd:TransportEdge;
+        otd:zone <https://lod.opentransportdata.swiss/zone/libero/libero-abo-abo-libero/300> ;
+        gtfs:stop ?haltestelle .
   
     ?haltestelle <http://www.opengis.net/ont/geosparql#hasGeometry>/<http://www.opengis.net/ont/geosparql#asWKT> ?geometrie ;
-    	rdfs:label ?geometrieLabel .
-
-} 
+    	  rdfs:label ?geometrieLabel .
+}

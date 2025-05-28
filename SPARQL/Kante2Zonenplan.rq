@@ -16,6 +16,6 @@ WHERE {
   		otd:zoningPlan ?Zonenplan;
   		gtfs:stop ?haltestelle.
   
-  	FILTER(?Zonenplan IN (<https://lod.opentransportdata.swiss/zoningplan/onde-verte/onde-verte-billett>))
+  	FILTER(?Zonenplan IN (<https://lod.opentransportdata.swiss/zoningplan/onde-verte/onde-verte-billett-billett>))
 } 
 LIMIT 1000

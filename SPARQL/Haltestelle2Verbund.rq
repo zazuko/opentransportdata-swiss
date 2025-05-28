@@ -19,9 +19,9 @@ WHERE {
   
   	?verbund rdfs:label ?verbund_name.
     
-  	FILTER(?Zonenplan IN (<https://lod.opentransportdata.swiss/zoningplan/libero/libero-abo-libero>))
+  	FILTER(?Zonenplan IN (<https://lod.opentransportdata.swiss/zoningplan/libero/libero-abo-abo-libero>))
 
-  	SERVICE <https://int.lindas.admin.ch/query> {
+  	SERVICE <https://lindas.admin.ch/query> {
     ?haltestelle rdfs:label ?haltestelle_bezeichnung;
 		dcterms:identifier ?didok.
 }
